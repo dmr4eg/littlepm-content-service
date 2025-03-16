@@ -1,0 +1,302 @@
+openapi: 3.0.3
+info:
+  title: Little PM API
+  version: 1.0.0
+  description: |
+    Comprehensive project management API with task tracking, reporting,
+    and video resources. Provides secure access control and project organization.
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: https://app.little.pm
+    description: Production API
+
+tags:
+  - name: Tasks
+    description: Task management within projects
+
+paths:
+  /tasks/{taskUUID}:
+    parameters:
+      - $ref: "#/components/parameters/taskUUID"
+    get:
+      tags: [Tasks]
+      summary: Get task details
+      description: Retrieve detailed information about a specific task
+      operationId: getTask
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Task details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags: [Tasks]
+      summary: Update task
+      description: Modify existing task details
+      operationId: updateTask
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags: [Tasks]
+      summary: Delete task
+      description: Permanently remove a task
+      operationId: deleteTask
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Task deleted successfully
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Valid JWT token required for authenticated endpoints
+
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    offset:
+      name: offset
+      in: query
+      description: Pagination offset
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    projectUUID:
+      name: projectUUID
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/uuid'
+      description: Unique project identifier
+    taskUUID:
+      name: taskUUID
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/uuid'
+      description: Unique task identifier
+    blueprintUUID:
+      name: blueprintUUID
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/uuid'
+      description: Unique task identifier
+    reportUUID:
+      name: reportUUID
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/uuid'
+      description: Unique report identifier
+    videoUUID:
+      name: videoUUID
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/uuid'
+      description: Unique video identifier
+    roleFilter:
+      name: role
+      in: query
+      description: Filter by user role
+      schema:
+        type: string
+        enum: [owner, member]
+    taskStatusFilter:
+      name: status
+      in: query
+      description: Filter tasks by status
+      schema:
+        type: string
+        enum: [pending, in_progress, completed]
+    blueprintType:
+      name: status
+      in: query
+      description: Blueprints by its type
+      schema:
+        type: string
+        enum: [toy]
+    projectStatusFilter:
+      name: status
+      in: query
+      description: Filter tasks by status
+      schema:
+        type: string
+        enum: [in_progress, completed]
+
+
+  schemas:
+    uuid:
+      type: string
+      format: uuid
+      example: "550e8400-e29b-41d4-a716-446655440000"
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 404
+        message:
+          type: string
+          example: "Resource not found"
+        details:
+          type: array
+          items:
+            type: string
+          example: ["Invalid UUID format", "Missing required field"]
+
+    Task:
+      type: object
+      required: [taskUUID, projectUUID, title, status, blueprintUUID]
+      properties:
+        taskUUID:
+          $ref: '#/components/schemas/uuid'
+        projectUUID:
+          $ref: '#/components/schemas/uuid'
+        title:
+          type: string
+          example: "Competitor Analysis"
+        blueprintUUID:
+          $ref: '#/components/schemas/uuid'
+        description:
+          type: string
+          example: "Research main competitors' features"
+        day:
+          type: string
+          enum: [ MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY ]
+        status:
+          type: string
+          enum: [pending, in_progress, completed]
+        dueDate:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    TaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [pending, in_progress, completed]
+        dueDate:
+          type: string
+          format: date-time
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: "Validation error"
+            details: ["Invalid date format", "Missing required field: title"]
+
+    UnauthorizedError:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 401
+            message: "Authentication required"
+
+    ForbiddenError:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 403
+            message: "Insufficient permissions"
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 404
+            message: "Project not found"
+
+    InternalServerError:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 500
+            message: "Internal server error"
