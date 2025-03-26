@@ -1,4 +1,4 @@
-package pm.little.taskservice;
+package pm.little.contentservice;
 
 public interface TaskService {
 }

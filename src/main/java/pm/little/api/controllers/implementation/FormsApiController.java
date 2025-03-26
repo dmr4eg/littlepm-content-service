@@ -1,8 +1,11 @@
 package pm.little.api.controllers.implementation;
 
 import jakarta.annotation.Generated;
-import pm.little.api.controllers.TasksApi;
-import pm.little.api.models.TaskBlueprint;
+import pm.little.api.controllers.FormsApi;
+import pm.little.api.models.FormBlueprint;
+import pm.little.api.models.FormField;
+import pm.little.api.models.FormFieldMapper;
+import pm.little.api.models.FormsFormBlueprintUuidFieldsFieldUuidPutRequest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +16,16 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.Optional;
 
+
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Controller
 @RequestMapping("${openapi.projectDay.base-path:}")
-public class TasksApiController implements TasksApi {
+public class FormsApiController implements FormsApi {
 
     private final NativeWebRequest request;
 
     @Autowired
-    public TasksApiController(NativeWebRequest request) {
+    public FormsApiController(NativeWebRequest request) {
         this.request = request;
     }
 

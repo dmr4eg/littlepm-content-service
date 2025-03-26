@@ -5,10 +5,9 @@
  */
 package pm.little.api.controllers;
 
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
-import pm.little.api.models.Error;
-import pm.little.api.models.Task;
-import pm.little.api.models.TaskUpdate;
+import pm.little.api.models.TaskBlueprint;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,8 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
-@Tag(name = "Tasks", description = "Task management within projects")
+@Tag(name = "tasks", description = "the tasks API")
 public interface TasksApi {
 
     default Optional<NativeWebRequest> getRequest() {
@@ -42,66 +42,35 @@ public interface TasksApi {
     }
 
     /**
-     * GET /tasks/{taskUUID} : Get task details
-     * Retrieve detailed information about a specific task
+     * GET /tasks : List task templates
      *
-     * @param taskUUID Unique task identifier (required)
-     * @return Task details retrieved (status code 200)
-     *         or Insufficient permissions (status code 403)
-     *         or Resource not found (status code 404)
-     *         or Server error (status code 500)
+     * @param limit Maximum number of items to return (optional)
+     * @param offset Number of items to skip before starting to collect the result set (optional)
+     * @return A list of task templates (status code 200)
      */
     @Operation(
-        operationId = "getTask",
-        summary = "Get task details",
-        description = "Retrieve detailed information about a specific task",
-        tags = { "Tasks" },
+        operationId = "tasksGet",
+        summary = "List task templates",
         responses = {
-            @ApiResponse(responseCode = "200", description = "Task details retrieved", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Task.class))
-            }),
-            @ApiResponse(responseCode = "403", description = "Insufficient permissions", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Resource not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "500", description = "Server error", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            @ApiResponse(responseCode = "200", description = "A list of task templates", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TaskBlueprint.class)))
             })
-        },
-        security = {
-            @SecurityRequirement(name = "bearerAuth")
         }
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/tasks/{taskUUID}",
+        value = "/tasks",
         produces = { "application/json" }
     )
     
-    default ResponseEntity<Task> getTask(
-        @Parameter(name = "taskUUID", description = "Unique task identifier", required = true, in = ParameterIn.PATH) @PathVariable("taskUUID") UUID taskUUID
+    default ResponseEntity<List<TaskBlueprint>> tasksGet(
+        @Parameter(name = "limit", description = "Maximum number of items to return", in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = false) Integer limit,
+        @Parameter(name = "offset", description = "Number of items to skip before starting to collect the result set", in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = false) Integer offset
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"blueprintUUID\" : \"550e8400-e29b-41d4-a716-446655440000\", \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"dueDate\" : \"2000-01-23T04:56:07.000+00:00\", \"description\" : \"Research main competitors' features\", \"title\" : \"Competitor Analysis\", \"taskUUID\" : \"550e8400-e29b-41d4-a716-446655440000\", \"day\" : \"MONDAY\", \"projectUUID\" : \"550e8400-e29b-41d4-a716-446655440000\", \"status\" : \"pending\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"details\" : [ \"Invalid UUID format\", \"Missing required field\" ], \"message\" : \"Resource not found\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"details\" : [ \"Invalid UUID format\", \"Missing required field\" ], \"message\" : \"Resource not found\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"details\" : [ \"Invalid UUID format\", \"Missing required field\" ], \"message\" : \"Resource not found\" }";
+                    String exampleString = "[ { \"description\" : \"description\", \"title\" : \"title\", \"task_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"description\" : \"description\", \"title\" : \"title\", \"task_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -113,78 +82,148 @@ public interface TasksApi {
 
 
     /**
-     * PUT /tasks/{taskUUID} : Update task
-     * Modify existing task details
+     * POST /tasks : Create task template
      *
-     * @param taskUUID Unique task identifier (required)
-     * @param taskUpdate  (required)
-     * @return Task updated successfully (status code 200)
-     *         or Invalid request parameters (status code 400)
-     *         or Insufficient permissions (status code 403)
-     *         or Resource not found (status code 404)
-     *         or Server error (status code 500)
+     * @param taskBlueprint  (required)
+     * @return Created task blueprint (status code 200)
      */
     @Operation(
-        operationId = "updateTask",
-        summary = "Update task",
-        description = "Modify existing task details",
-        tags = { "Tasks" },
+        operationId = "tasksPost",
+        summary = "Create task template",
         responses = {
-            @ApiResponse(responseCode = "200", description = "Task updated successfully", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Task.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid request parameters", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "403", description = "Insufficient permissions", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Resource not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "500", description = "Server error", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            @ApiResponse(responseCode = "200", description = "Created task blueprint", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskBlueprint.class))
             })
         },
         security = {
-            @SecurityRequirement(name = "bearerAuth")
+            @SecurityRequirement(name = "admin_jwt")
         }
     )
     @RequestMapping(
-        method = RequestMethod.PUT,
-        value = "/tasks/{taskUUID}",
+        method = RequestMethod.POST,
+        value = "/tasks",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<Task> updateTask(
-        @Parameter(name = "taskUUID", description = "Unique task identifier", required = true, in = ParameterIn.PATH) @PathVariable("taskUUID") UUID taskUUID,
-        @Parameter(name = "TaskUpdate", description = "", required = true) @Valid @RequestBody TaskUpdate taskUpdate
+    default ResponseEntity<TaskBlueprint> tasksPost(
+        @Parameter(name = "TaskBlueprint", description = "", required = true) @Valid @RequestBody TaskBlueprint taskBlueprint
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"blueprintUUID\" : \"550e8400-e29b-41d4-a716-446655440000\", \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"dueDate\" : \"2000-01-23T04:56:07.000+00:00\", \"description\" : \"Research main competitors' features\", \"title\" : \"Competitor Analysis\", \"taskUUID\" : \"550e8400-e29b-41d4-a716-446655440000\", \"day\" : \"MONDAY\", \"projectUUID\" : \"550e8400-e29b-41d4-a716-446655440000\", \"status\" : \"pending\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
+                    String exampleString = "{ \"description\" : \"description\", \"title\" : \"title\", \"task_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * DELETE /tasks/{task_blueprint_uuid} : Delete task template
+     *
+     * @param taskBlueprintUuid The UUID of the task blueprint (required)
+     * @return No Content (status code 204)
+     */
+    @Operation(
+        operationId = "tasksTaskBlueprintUuidDelete",
+        summary = "Delete task template",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "No Content")
+        },
+        security = {
+            @SecurityRequirement(name = "admin_jwt")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.DELETE,
+        value = "/tasks/{task_blueprint_uuid}"
+    )
+    
+    default ResponseEntity<Void> tasksTaskBlueprintUuidDelete(
+        @Parameter(name = "task_blueprint_uuid", description = "The UUID of the task blueprint", required = true, in = ParameterIn.PATH) @PathVariable("task_blueprint_uuid") UUID taskBlueprintUuid
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /tasks/{task_blueprint_uuid} : Get task template
+     *
+     * @param taskBlueprintUuid The UUID of the task blueprint (required)
+     * @return Task blueprint (status code 200)
+     */
+    @Operation(
+        operationId = "tasksTaskBlueprintUuidGet",
+        summary = "Get task template",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Task blueprint", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskBlueprint.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/tasks/{task_blueprint_uuid}",
+        produces = { "application/json" }
+    )
+    
+    default ResponseEntity<TaskBlueprint> tasksTaskBlueprintUuidGet(
+        @Parameter(name = "task_blueprint_uuid", description = "The UUID of the task blueprint", required = true, in = ParameterIn.PATH) @PathVariable("task_blueprint_uuid") UUID taskBlueprintUuid
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"details\" : [ \"Invalid UUID format\", \"Missing required field\" ], \"message\" : \"Resource not found\" }";
+                    String exampleString = "{ \"description\" : \"description\", \"title\" : \"title\", \"task_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * PUT /tasks/{task_blueprint_uuid} : Update task template
+     *
+     * @param taskBlueprintUuid The UUID of the task blueprint (required)
+     * @param taskBlueprint  (required)
+     * @return Updated task blueprint (status code 200)
+     */
+    @Operation(
+        operationId = "tasksTaskBlueprintUuidPut",
+        summary = "Update task template",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Updated task blueprint", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskBlueprint.class))
+            })
+        },
+        security = {
+            @SecurityRequirement(name = "admin_jwt")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.PUT,
+        value = "/tasks/{task_blueprint_uuid}",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<TaskBlueprint> tasksTaskBlueprintUuidPut(
+        @Parameter(name = "task_blueprint_uuid", description = "The UUID of the task blueprint", required = true, in = ParameterIn.PATH) @PathVariable("task_blueprint_uuid") UUID taskBlueprintUuid,
+        @Parameter(name = "TaskBlueprint", description = "", required = true) @Valid @RequestBody TaskBlueprint taskBlueprint
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"details\" : [ \"Invalid UUID format\", \"Missing required field\" ], \"message\" : \"Resource not found\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"details\" : [ \"Invalid UUID format\", \"Missing required field\" ], \"message\" : \"Resource not found\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"details\" : [ \"Invalid UUID format\", \"Missing required field\" ], \"message\" : \"Resource not found\" }";
+                    String exampleString = "{ \"description\" : \"description\", \"title\" : \"title\", \"task_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
