@@ -71,23 +71,6 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-    delete:
-      tags: [Tasks]
-      summary: Delete task
-      description: Permanently remove a task
-      operationId: deleteTask
-      security:
-        - bearerAuth: []
-      responses:
-        '204':
-          description: Task deleted successfully
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
-        '404':
-          $ref: '#/components/responses/NotFoundError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-
 components:
   securitySchemes:
     bearerAuth:
