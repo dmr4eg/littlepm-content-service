@@ -1,6 +1,6 @@
 package pm.little.api.controllers.implementation;
 
-import pm.little.api.controllers.MediaApi;
+import pm.little.api.controllers.TaskInstancesApi;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +18,12 @@ import java.util.Optional;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Controller
 @RequestMapping("${openapi.projectDay.base-path:}")
-public class MediaApiController implements MediaApi {
+public class TaskInstancesApiController implements TaskInstancesApi {
 
     private final NativeWebRequest request;
 
     @Autowired
-    public MediaApiController(NativeWebRequest request) {
+    public TaskInstancesApiController(NativeWebRequest request) {
         this.request = request;
     }
 

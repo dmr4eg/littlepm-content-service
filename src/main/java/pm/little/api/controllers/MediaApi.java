@@ -5,8 +5,6 @@
  */
 package pm.little.api.controllers;
 
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
 import pm.little.api.models.Media;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -28,12 +26,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
 @Tag(name = "media", description = "the media API")
 public interface MediaApi {
@@ -43,14 +44,54 @@ public interface MediaApi {
     }
 
     /**
-     * DELETE /media/{media_uuid} : Delete media
+     * GET /media : (Optional) List media items
+     *
+     * @param limit Limit of the list (required)
+     * @param offset Offset of the list (required)
+     * @return A list of media (status code 200)
+     */
+    @Operation(
+        operationId = "mediaGet",
+        summary = "(Optional) List media items",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "A list of media", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Media.class)))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/media",
+        produces = { "application/json" }
+    )
+    
+    default ResponseEntity<List<Media>> mediaGet(
+        @NotNull @Parameter(name = "limit", description = "Limit of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = true) Integer limit,
+        @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ { \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\" }, { \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\" } ]";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * DELETE /media/{media_uuid} : Delete media (admin only)
      *
      * @param mediaUuid The UUID of the media resource (required)
      * @return No Content (status code 204)
      */
     @Operation(
         operationId = "mediaMediaUuidDelete",
-        summary = "Delete media",
+        summary = "Delete media (admin only)",
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content")
         },
@@ -110,7 +151,7 @@ public interface MediaApi {
 
 
     /**
-     * PUT /media/{media_uuid} : Update media metadata
+     * PUT /media/{media_uuid} : Update media metadata (admin only)
      *
      * @param mediaUuid The UUID of the media resource (required)
      * @param media  (required)
@@ -118,7 +159,7 @@ public interface MediaApi {
      */
     @Operation(
         operationId = "mediaMediaUuidPut",
-        summary = "Update media metadata",
+        summary = "Update media metadata (admin only)",
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated media metadata", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Media.class))
@@ -154,14 +195,14 @@ public interface MediaApi {
 
 
     /**
-     * POST /media : Upload new media
+     * POST /media : Upload new media (admin only)
      *
      * @param media  (required)
      * @return The uploaded media metadata (status code 200)
      */
     @Operation(
         operationId = "mediaPost",
-        summary = "Upload new media",
+        summary = "Upload new media (admin only)",
         responses = {
             @ApiResponse(responseCode = "200", description = "The uploaded media metadata", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Media.class))

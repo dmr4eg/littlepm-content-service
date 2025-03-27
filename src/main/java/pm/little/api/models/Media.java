@@ -1,45 +1,62 @@
 package pm.little.api.models;
 
+import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.UUID;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.springframework.lang.Nullable;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.lang.Nullable;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import pm.little.api.models.enums.TypeEnum;
 
+
+import java.util.*;
 
 /**
  * Media
  */
 @Entity
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class Media {
   @Id
   @NotNull
   @GeneratedValue(strategy = GenerationType.UUID)
-  private @Nullable UUID mediaUUID;
+  private UUID mediaUUID;
 
   /**
    * Gets or Sets type
    */
 
 
-  private @Nullable TypeEnum type;
+  private TypeEnum type;
 
-  private @Nullable String title;
+  private String title;
 
   private @Nullable String description;
+
+  public Media() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public Media(UUID mediaUUID, TypeEnum type, String title) {
+    this.mediaUUID = mediaUUID;
+    this.type = type;
+    this.title = title;
+  }
 
   public Media mediaUUID(UUID mediaUUID) {
     this.mediaUUID = mediaUUID;
@@ -47,11 +64,11 @@ public class Media {
   }
 
   /**
-   * Get mediaUUID
+   * UUID for a Media resource
    * @return mediaUUID
    */
-  @Valid
-  @Schema(name = "mediaUUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "mediaUUID", description = "UUID for a Media resource", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("mediaUUID")
   public UUID getMediaUUID() {
     return mediaUUID;
@@ -70,8 +87,8 @@ public class Media {
    * Get type
    * @return type
    */
-  
-  @Schema(name = "type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "type", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("type")
   public TypeEnum getType() {
     return type;
@@ -90,8 +107,8 @@ public class Media {
    * Get title
    * @return title
    */
-  
-  @Schema(name = "title", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "title", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("title")
   public String getTitle() {
     return title;

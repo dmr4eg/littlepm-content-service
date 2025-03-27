@@ -2,25 +2,38 @@ package pm.little.api.models.dto;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import org.springframework.lang.Nullable;
-
-import io.swagger.v3.oas.annotations.media.Schema;
 import pm.little.api.models.TaskBlueprint;
 import pm.little.api.models.TaskInstance;
+
+import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 
 /**
  * TaskDTO
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class TaskDTO {
 
-  private @Nullable TaskBlueprint blueprint;
+  private TaskBlueprint blueprint;
 
-  private @Nullable TaskInstance progress;
+  private TaskInstance progress;
+
+  public TaskDTO() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public TaskDTO(TaskBlueprint blueprint, TaskInstance progress) {
+    this.blueprint = blueprint;
+    this.progress = progress;
+  }
 
   public TaskDTO blueprint(TaskBlueprint blueprint) {
     this.blueprint = blueprint;
@@ -31,8 +44,8 @@ public class TaskDTO {
    * Get blueprint
    * @return blueprint
    */
-  @Valid
-  @Schema(name = "blueprint", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "blueprint", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("blueprint")
   public TaskBlueprint getBlueprint() {
     return blueprint;
@@ -51,8 +64,8 @@ public class TaskDTO {
    * Get progress
    * @return progress
    */
-  @Valid 
-  @Schema(name = "progress", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "progress", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("progress")
   public TaskInstance getProgress() {
     return progress;

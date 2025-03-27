@@ -1,11 +1,19 @@
 package pm.little.api.models;
 
+import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import org.springframework.lang.Nullable;
-
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
+import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
 
 
 /**
@@ -13,10 +21,21 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 
 @Schema(name = "Error", description = "Error object")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class Error {
 
-  private @Nullable String message;
+  private String message;
+
+  public Error() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public Error(String message) {
+    this.message = message;
+  }
 
   public Error message(String message) {
     this.message = message;
@@ -27,8 +46,8 @@ public class Error {
    * Error message
    * @return message
    */
-  
-  @Schema(name = "message", example = "Error message", description = "Error message", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "message", description = "Error message", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("message")
   public String getMessage() {
     return message;

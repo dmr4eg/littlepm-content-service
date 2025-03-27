@@ -4,23 +4,36 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
-import org.springframework.lang.Nullable;
-
-import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import pm.little.api.models.FormBlueprint;
 import pm.little.api.models.FormInstance;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 
 /**
  * FormDTO
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class FormDTO {
 
-  private @Nullable FormBlueprint blueprint;
+  private FormBlueprint blueprint;
 
-  private @Nullable FormInstance instance;
+  private FormInstance instance;
+
+  public FormDTO() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public FormDTO(FormBlueprint blueprint, FormInstance instance) {
+    this.blueprint = blueprint;
+    this.instance = instance;
+  }
 
   public FormDTO blueprint(FormBlueprint blueprint) {
     this.blueprint = blueprint;
@@ -31,8 +44,9 @@ public class FormDTO {
    * Get blueprint
    * @return blueprint
    */
+  @NotNull
   @Valid
-  @Schema(name = "blueprint", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "blueprint", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("blueprint")
   public FormBlueprint getBlueprint() {
     return blueprint;
@@ -51,8 +65,8 @@ public class FormDTO {
    * Get instance
    * @return instance
    */
-  @Valid 
-  @Schema(name = "instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "instance", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("instance")
   public FormInstance getInstance() {
     return instance;

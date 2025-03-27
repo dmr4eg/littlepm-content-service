@@ -1,6 +1,6 @@
 package pm.little.api.controllers.implementation;
 
-import pm.little.api.controllers.MediaApi;
+import pm.little.api.controllers.FormInstancesApi;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +11,18 @@ import org.springframework.web.context.request.NativeWebRequest;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.Optional;
 
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Controller
 @RequestMapping("${openapi.projectDay.base-path:}")
-public class MediaApiController implements MediaApi {
+public class FormInstancesApiController implements FormInstancesApi {
 
     private final NativeWebRequest request;
 
     @Autowired
-    public MediaApiController(NativeWebRequest request) {
+    public FormInstancesApiController(NativeWebRequest request) {
         this.request = request;
     }
 

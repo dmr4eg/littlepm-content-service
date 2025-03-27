@@ -1,47 +1,64 @@
 package pm.little.api.models;
 
+import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.UUID;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.springframework.lang.Nullable;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.lang.Nullable;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import pm.little.api.models.enums.InputTypeEnum;
 
+
+import java.util.*;
 
 /**
  * FormField
  */
 @Entity
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class FormField {
   @Id
   @NotNull
   @GeneratedValue(strategy = GenerationType.UUID)
-  private @Nullable UUID formFieldUuid;
+  private UUID formFieldUuid;
 
   /**
    * Gets or Sets inputType
    */
 
 
-  private @Nullable InputTypeEnum inputType;
+  private InputTypeEnum inputType;
 
   private @Nullable Boolean required;
 
-  private @Nullable String title;
+  private String title;
 
   private @Nullable String description;
+
+  public FormField() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public FormField(UUID formFieldUuid, InputTypeEnum inputType, String title) {
+    this.formFieldUuid = formFieldUuid;
+    this.inputType = inputType;
+    this.title = title;
+  }
 
   public FormField formFieldUuid(UUID formFieldUuid) {
     this.formFieldUuid = formFieldUuid;
@@ -49,11 +66,11 @@ public class FormField {
   }
 
   /**
-   * Get formFieldUuid
+   * UUID for a Form Field
    * @return formFieldUuid
    */
-  @Valid
-  @Schema(name = "form_field_uuid", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "form_field_uuid", description = "UUID for a Form Field", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("form_field_uuid")
   public UUID getFormFieldUuid() {
     return formFieldUuid;
@@ -72,8 +89,8 @@ public class FormField {
    * Get inputType
    * @return inputType
    */
-  
-  @Schema(name = "input_type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "input_type", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("input_type")
   public InputTypeEnum getInputType() {
     return inputType;
@@ -112,8 +129,8 @@ public class FormField {
    * Get title
    * @return title
    */
-  
-  @Schema(name = "title", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "title", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("title")
   public String getTitle() {
     return title;

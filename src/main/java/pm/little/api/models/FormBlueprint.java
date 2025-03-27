@@ -1,38 +1,56 @@
 package pm.little.api.models;
 
+import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.UUID;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jdk.jfr.Enabled;
+import org.springframework.lang.Nullable;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.lang.Nullable;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
 
 
 /**
  * FormBlueprint
  */
 @Entity
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class FormBlueprint {
   @Id
   @NotNull
   @GeneratedValue(strategy = GenerationType.UUID)
-  private @Nullable UUID formBlueprintUuid;
+  private UUID formBlueprintUuid;
 
-  private @Nullable String title;
+  private String title;
 
   private @Nullable String description;
 
   private @Nullable String callbackUrl;
+
+  public FormBlueprint() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public FormBlueprint(UUID formBlueprintUuid, String title) {
+    this.formBlueprintUuid = formBlueprintUuid;
+    this.title = title;
+  }
 
   public FormBlueprint formBlueprintUuid(UUID formBlueprintUuid) {
     this.formBlueprintUuid = formBlueprintUuid;
@@ -40,11 +58,11 @@ public class FormBlueprint {
   }
 
   /**
-   * Get formBlueprintUuid
+   * UUID for a Form Blueprint
    * @return formBlueprintUuid
    */
-  @Valid
-  @Schema(name = "form_blueprint_uuid", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "form_blueprint_uuid", description = "UUID for a Form Blueprint", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("form_blueprint_uuid")
   public UUID getFormBlueprintUuid() {
     return formBlueprintUuid;
@@ -63,8 +81,8 @@ public class FormBlueprint {
    * Get title
    * @return title
    */
-  
-  @Schema(name = "title", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "title", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("title")
   public String getTitle() {
     return title;

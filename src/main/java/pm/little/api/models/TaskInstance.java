@@ -2,69 +2,59 @@ package pm.little.api.models;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.UUID;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import pm.little.api.models.ids.TaskInstanceId;
 
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
-import org.springframework.lang.Nullable;
-
+import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-
-
 /**
- * TaskInstance
+ * User&#39;s progress for a specific task
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Entity
+@Schema(name = "TaskInstance", description = "User's progress for a specific task")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class TaskInstance {
+  @EmbeddedId
+  private TaskInstanceId id;
 
-  private @Nullable UUID taskBlueprintUuid;
+  private Boolean status;
 
-  private @Nullable UUID userUuid;
+  public TaskInstance() {
+    super();
+  }
 
-  private @Nullable Boolean status;
+  /**
+   * Constructor with only required parameters
+   */
+  public TaskInstance(TaskInstanceId id, Boolean status) {
+    this.id = id;
+    this.status = status;
+  }
 
-  public TaskInstance taskBlueprintUuid(UUID taskBlueprintUuid) {
-    this.taskBlueprintUuid = taskBlueprintUuid;
+  public TaskInstance id(TaskInstanceId id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Get taskBlueprintUuid
-   * @return taskBlueprintUuid
+   * Get id
+   * @return id
    */
-  @Valid
-  @Schema(name = "task_blueprint_uuid", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("task_blueprint_uuid")
-  public UUID getTaskBlueprintUuid() {
-    return taskBlueprintUuid;
+  @NotNull @Valid 
+  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("id")
+  public TaskInstanceId getId() {
+    return id;
   }
 
-  public void setTaskBlueprintUuid(UUID taskBlueprintUuid) {
-    this.taskBlueprintUuid = taskBlueprintUuid;
-  }
-
-  public TaskInstance userUuid(UUID userUuid) {
-    this.userUuid = userUuid;
-    return this;
-  }
-
-  /**
-   * Get userUuid
-   * @return userUuid
-   */
-  @Valid 
-  @Schema(name = "user_uuid", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("user_uuid")
-  public UUID getUserUuid() {
-    return userUuid;
-  }
-
-  public void setUserUuid(UUID userUuid) {
-    this.userUuid = userUuid;
+  public void setId(TaskInstanceId id) {
+    this.id = id;
   }
 
   public TaskInstance status(Boolean status) {
@@ -76,8 +66,8 @@ public class TaskInstance {
    * True if completed, false otherwise
    * @return status
    */
-  
-  @Schema(name = "status", description = "True if completed, false otherwise", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "status", description = "True if completed, false otherwise", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("status")
   public Boolean getStatus() {
     return status;
@@ -96,22 +86,20 @@ public class TaskInstance {
       return false;
     }
     TaskInstance taskInstance = (TaskInstance) o;
-    return Objects.equals(this.taskBlueprintUuid, taskInstance.taskBlueprintUuid) &&
-        Objects.equals(this.userUuid, taskInstance.userUuid) &&
+    return Objects.equals(this.id, taskInstance.id) &&
         Objects.equals(this.status, taskInstance.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(taskBlueprintUuid, userUuid, status);
+    return Objects.hash(id, status);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class TaskInstance {\n");
-    sb.append("    taskBlueprintUuid: ").append(toIndentedString(taskBlueprintUuid)).append("\n");
-    sb.append("    userUuid: ").append(toIndentedString(userUuid)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();

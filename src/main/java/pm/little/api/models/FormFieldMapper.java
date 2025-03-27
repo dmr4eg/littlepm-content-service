@@ -2,67 +2,58 @@ package pm.little.api.models;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.UUID;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import pm.little.api.models.ids.FormFieldMapperId;
 
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
-import org.springframework.lang.Nullable;
-
+import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
 /**
- * FormFieldMapper
+ * Mapping a field within a form
  */
-
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Entity
+@Schema(name = "FormFieldMapper", description = "Mapping a field within a form")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class FormFieldMapper {
+  @EmbeddedId
+  private FormFieldMapperId id;
 
-  private @Nullable UUID formBlueprintUuid;
+  private Integer order;
 
-  private @Nullable UUID formField;
+  public FormFieldMapper() {
+    super();
+  }
 
-  private @Nullable Integer order;
+  /**
+   * Constructor with only required parameters
+   */
+  public FormFieldMapper(FormFieldMapperId id, Integer order) {
+    this.id = id;
+    this.order = order;
+  }
 
-  public FormFieldMapper formBlueprintUuid(UUID formBlueprintUuid) {
-    this.formBlueprintUuid = formBlueprintUuid;
+  public FormFieldMapper id(FormFieldMapperId id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Get formBlueprintUuid
-   * @return formBlueprintUuid
+   * Get id
+   * @return id
    */
-  @Valid
-  @Schema(name = "form_blueprint_uuid", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("form_blueprint_uuid")
-  public UUID getFormBlueprintUuid() {
-    return formBlueprintUuid;
+  @NotNull @Valid 
+  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("id")
+  public FormFieldMapperId getId() {
+    return id;
   }
 
-  public void setFormBlueprintUuid(UUID formBlueprintUuid) {
-    this.formBlueprintUuid = formBlueprintUuid;
-  }
-
-  public FormFieldMapper formField(UUID formField) {
-    this.formField = formField;
-    return this;
-  }
-
-  /**
-   * Get formField
-   * @return formField
-   */
-  @Valid 
-  @Schema(name = "form_field", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("form_field")
-  public UUID getFormField() {
-    return formField;
-  }
-
-  public void setFormField(UUID formField) {
-    this.formField = formField;
+  public void setId(FormFieldMapperId id) {
+    this.id = id;
   }
 
   public FormFieldMapper order(Integer order) {
@@ -71,11 +62,11 @@ public class FormFieldMapper {
   }
 
   /**
-   * Get order
+   * Order or position within a list
    * @return order
    */
-  
-  @Schema(name = "order", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "order", description = "Order or position within a list", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("order")
   public Integer getOrder() {
     return order;
@@ -94,22 +85,20 @@ public class FormFieldMapper {
       return false;
     }
     FormFieldMapper formFieldMapper = (FormFieldMapper) o;
-    return Objects.equals(this.formBlueprintUuid, formFieldMapper.formBlueprintUuid) &&
-        Objects.equals(this.formField, formFieldMapper.formField) &&
+    return Objects.equals(this.id, formFieldMapper.id) &&
         Objects.equals(this.order, formFieldMapper.order);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(formBlueprintUuid, formField, order);
+    return Objects.hash(id, order);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FormFieldMapper {\n");
-    sb.append("    formBlueprintUuid: ").append(toIndentedString(formBlueprintUuid)).append("\n");
-    sb.append("    formField: ").append(toIndentedString(formField)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");
     return sb.toString();

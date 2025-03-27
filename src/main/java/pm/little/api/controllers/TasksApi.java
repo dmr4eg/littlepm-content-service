@@ -5,8 +5,6 @@
  */
 package pm.little.api.controllers;
 
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
 import pm.little.api.models.TaskBlueprint;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -28,11 +26,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
 @Tag(name = "tasks", description = "the tasks API")
 public interface TasksApi {
@@ -44,8 +46,8 @@ public interface TasksApi {
     /**
      * GET /tasks : List task templates
      *
-     * @param limit Maximum number of items to return (optional)
-     * @param offset Number of items to skip before starting to collect the result set (optional)
+     * @param limit Limit of the list (required)
+     * @param offset Offset of the list (required)
      * @return A list of task templates (status code 200)
      */
     @Operation(
@@ -64,8 +66,8 @@ public interface TasksApi {
     )
     
     default ResponseEntity<List<TaskBlueprint>> tasksGet(
-        @Parameter(name = "limit", description = "Maximum number of items to return", in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = false) Integer limit,
-        @Parameter(name = "offset", description = "Number of items to skip before starting to collect the result set", in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = false) Integer offset
+        @NotNull @Parameter(name = "limit", description = "Limit of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = true) Integer limit,
+        @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -82,14 +84,14 @@ public interface TasksApi {
 
 
     /**
-     * POST /tasks : Create task template
+     * POST /tasks : Create task template (admin only)
      *
      * @param taskBlueprint  (required)
      * @return Created task blueprint (status code 200)
      */
     @Operation(
         operationId = "tasksPost",
-        summary = "Create task template",
+        summary = "Create task template (admin only)",
         responses = {
             @ApiResponse(responseCode = "200", description = "Created task blueprint", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = TaskBlueprint.class))
@@ -124,14 +126,14 @@ public interface TasksApi {
 
 
     /**
-     * DELETE /tasks/{task_blueprint_uuid} : Delete task template
+     * DELETE /tasks/{task_blueprint_uuid} : Delete task template (admin only)
      *
      * @param taskBlueprintUuid The UUID of the task blueprint (required)
      * @return No Content (status code 204)
      */
     @Operation(
         operationId = "tasksTaskBlueprintUuidDelete",
-        summary = "Delete task template",
+        summary = "Delete task template (admin only)",
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content")
         },
@@ -191,7 +193,7 @@ public interface TasksApi {
 
 
     /**
-     * PUT /tasks/{task_blueprint_uuid} : Update task template
+     * PUT /tasks/{task_blueprint_uuid} : Update task template (admin only)
      *
      * @param taskBlueprintUuid The UUID of the task blueprint (required)
      * @param taskBlueprint  (required)
@@ -199,7 +201,7 @@ public interface TasksApi {
      */
     @Operation(
         operationId = "tasksTaskBlueprintUuidPut",
-        summary = "Update task template",
+        summary = "Update task template (admin only)",
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated task blueprint", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = TaskBlueprint.class))

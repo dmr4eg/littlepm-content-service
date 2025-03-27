@@ -2,67 +2,58 @@ package pm.little.api.models;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.UUID;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import pm.little.api.models.ids.FormInstanceId;
 
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
-import org.springframework.lang.Nullable;
-
+import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
 /**
- * FormInstance
+ * Specific instance of a form for a user
  */
-
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Entity
+@Schema(name = "FormInstance", description = "Specific instance of a form for a user")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class FormInstance {
+  @EmbeddedId
+  private FormInstanceId id;
 
-  private @Nullable UUID formBlueprintUuid;
+  private Boolean status;
 
-  private @Nullable UUID userUuid;
+  public FormInstance() {
+    super();
+  }
 
-  private @Nullable Boolean status;
+  /**
+   * Constructor with only required parameters
+   */
+  public FormInstance(FormInstanceId id, Boolean status) {
+    this.id = id;
+    this.status = status;
+  }
 
-  public FormInstance formBlueprintUuid(UUID formBlueprintUuid) {
-    this.formBlueprintUuid = formBlueprintUuid;
+  public FormInstance id(FormInstanceId id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Get formBlueprintUuid
-   * @return formBlueprintUuid
+   * Get id
+   * @return id
    */
-  @Valid
-  @Schema(name = "form_blueprint_uuid", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("form_blueprint_uuid")
-  public UUID getFormBlueprintUuid() {
-    return formBlueprintUuid;
+  @NotNull @Valid 
+  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("id")
+  public FormInstanceId getId() {
+    return id;
   }
 
-  public void setFormBlueprintUuid(UUID formBlueprintUuid) {
-    this.formBlueprintUuid = formBlueprintUuid;
-  }
-
-  public FormInstance userUuid(UUID userUuid) {
-    this.userUuid = userUuid;
-    return this;
-  }
-
-  /**
-   * Get userUuid
-   * @return userUuid
-   */
-  @Valid 
-  @Schema(name = "user_uuid", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("user_uuid")
-  public UUID getUserUuid() {
-    return userUuid;
-  }
-
-  public void setUserUuid(UUID userUuid) {
-    this.userUuid = userUuid;
+  public void setId(FormInstanceId id) {
+    this.id = id;
   }
 
   public FormInstance status(Boolean status) {
@@ -74,8 +65,8 @@ public class FormInstance {
    * True if form is completed, false otherwise
    * @return status
    */
-  
-  @Schema(name = "status", description = "True if form is completed, false otherwise", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "status", description = "True if form is completed, false otherwise", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("status")
   public Boolean getStatus() {
     return status;
@@ -94,22 +85,20 @@ public class FormInstance {
       return false;
     }
     FormInstance formInstance = (FormInstance) o;
-    return Objects.equals(this.formBlueprintUuid, formInstance.formBlueprintUuid) &&
-        Objects.equals(this.userUuid, formInstance.userUuid) &&
+    return Objects.equals(this.id, formInstance.id) &&
         Objects.equals(this.status, formInstance.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(formBlueprintUuid, userUuid, status);
+    return Objects.hash(id, status);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FormInstance {\n");
-    sb.append("    formBlueprintUuid: ").append(toIndentedString(formBlueprintUuid)).append("\n");
-    sb.append("    userUuid: ").append(toIndentedString(userUuid)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();

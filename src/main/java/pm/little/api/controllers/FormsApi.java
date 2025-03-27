@@ -5,13 +5,7 @@
  */
 package pm.little.api.controllers;
 
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import pm.little.api.models.FormBlueprint;
-import pm.little.api.models.FormField;
-import pm.little.api.models.FormFieldMapper;
-import pm.little.api.models.FormsFormBlueprintUuidFieldsFieldUuidPutRequest;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,12 +26,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
 @Tag(name = "forms", description = "the forms API")
 public interface FormsApi {
@@ -47,14 +43,14 @@ public interface FormsApi {
     }
 
     /**
-     * DELETE /forms/{form_blueprint_uuid} : Delete form template
+     * DELETE /forms/{form_blueprint_uuid} : Delete form template (admin only)
      *
      * @param formBlueprintUuid The UUID of the form blueprint (required)
      * @return No Content (status code 204)
      */
     @Operation(
         operationId = "formsFormBlueprintUuidDelete",
-        summary = "Delete form template",
+        summary = "Delete form template (admin only)",
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content")
         },
@@ -70,210 +66,6 @@ public interface FormsApi {
     default ResponseEntity<Void> formsFormBlueprintUuidDelete(
         @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid
     ) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * DELETE /forms/{form_blueprint_uuid}/fields/{field_uuid} : Remove field from form
-     *
-     * @param formBlueprintUuid The UUID of the form blueprint (required)
-     * @param fieldUuid The UUID of the form field (required)
-     * @return No Content (status code 204)
-     */
-    @Operation(
-        operationId = "formsFormBlueprintUuidFieldsFieldUuidDelete",
-        summary = "Remove field from form",
-        responses = {
-            @ApiResponse(responseCode = "204", description = "No Content")
-        },
-        security = {
-            @SecurityRequirement(name = "admin_jwt")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.DELETE,
-        value = "/forms/{form_blueprint_uuid}/fields/{field_uuid}"
-    )
-    
-    default ResponseEntity<Void> formsFormBlueprintUuidFieldsFieldUuidDelete(
-        @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid,
-        @Parameter(name = "field_uuid", description = "The UUID of the form field", required = true, in = ParameterIn.PATH) @PathVariable("field_uuid") UUID fieldUuid
-    ) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * GET /forms/{form_blueprint_uuid}/fields/{field_uuid} : Get field details
-     *
-     * @param formBlueprintUuid The UUID of the form blueprint (required)
-     * @param fieldUuid The UUID of the form field (required)
-     * @return Form field (status code 200)
-     */
-    @Operation(
-        operationId = "formsFormBlueprintUuidFieldsFieldUuidGet",
-        summary = "Get field details",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Form field", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = FormField.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/forms/{form_blueprint_uuid}/fields/{field_uuid}",
-        produces = { "application/json" }
-    )
-    
-    default ResponseEntity<FormField> formsFormBlueprintUuidFieldsFieldUuidGet(
-        @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid,
-        @Parameter(name = "field_uuid", description = "The UUID of the form field", required = true, in = ParameterIn.PATH) @PathVariable("field_uuid") UUID fieldUuid
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"form_field_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"input_type\" : \"text\", \"description\" : \"description\", \"title\" : \"title\", \"required\" : true }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * PUT /forms/{form_blueprint_uuid}/fields/{field_uuid} : Update field
-     *
-     * @param formBlueprintUuid The UUID of the form blueprint (required)
-     * @param fieldUuid The UUID of the form field (required)
-     * @param formsFormBlueprintUuidFieldsFieldUuidPutRequest  (required)
-     * @return Updated form field (status code 200)
-     */
-    @Operation(
-        operationId = "formsFormBlueprintUuidFieldsFieldUuidPut",
-        summary = "Update field",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Updated form field", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = FormField.class))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "admin_jwt")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.PUT,
-        value = "/forms/{form_blueprint_uuid}/fields/{field_uuid}",
-        produces = { "application/json" },
-        consumes = { "application/json" }
-    )
-    
-    default ResponseEntity<FormField> formsFormBlueprintUuidFieldsFieldUuidPut(
-        @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid,
-        @Parameter(name = "field_uuid", description = "The UUID of the form field", required = true, in = ParameterIn.PATH) @PathVariable("field_uuid") UUID fieldUuid,
-        @Parameter(name = "FormsFormBlueprintUuidFieldsFieldUuidPutRequest", description = "", required = true) @Valid @RequestBody FormsFormBlueprintUuidFieldsFieldUuidPutRequest formsFormBlueprintUuidFieldsFieldUuidPutRequest
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"form_field_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"input_type\" : \"text\", \"description\" : \"description\", \"title\" : \"title\", \"required\" : true }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * GET /forms/{form_blueprint_uuid}/fields : List form fields
-     *
-     * @param formBlueprintUuid The UUID of the form blueprint (required)
-     * @param limit Maximum number of items to return (optional)
-     * @param offset Number of items to skip before starting to collect the result set (optional)
-     * @return A list of form field mappings (status code 200)
-     */
-    @Operation(
-        operationId = "formsFormBlueprintUuidFieldsGet",
-        summary = "List form fields",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "A list of form field mappings", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormFieldMapper.class)))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/forms/{form_blueprint_uuid}/fields",
-        produces = { "application/json" }
-    )
-    
-    default ResponseEntity<List<FormFieldMapper>> formsFormBlueprintUuidFieldsGet(
-        @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid,
-        @Parameter(name = "limit", description = "Maximum number of items to return", in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = false) Integer limit,
-        @Parameter(name = "offset", description = "Number of items to skip before starting to collect the result set", in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = false) Integer offset
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"form_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"form_field\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"order\" : 0 }, { \"form_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"form_field\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"order\" : 0 } ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * POST /forms/{form_blueprint_uuid}/fields : Add field to form
-     *
-     * @param formBlueprintUuid The UUID of the form blueprint (required)
-     * @param formFieldUuid Form field UUID in the query (required)
-     * @param order Order or position (general integer query usage) (required)
-     * @return Updated list of form field mappings (status code 200)
-     */
-    @Operation(
-        operationId = "formsFormBlueprintUuidFieldsPost",
-        summary = "Add field to form",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Updated list of form field mappings", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormFieldMapper.class)))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "admin_jwt")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/forms/{form_blueprint_uuid}/fields",
-        produces = { "application/json" }
-    )
-    
-    default ResponseEntity<List<FormFieldMapper>> formsFormBlueprintUuidFieldsPost(
-        @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid,
-        @NotNull @Parameter(name = "form_field_uuid", description = "Form field UUID in the query", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "form_field_uuid", required = true) UUID formFieldUuid,
-        @NotNull @Parameter(name = "order", description = "Order or position (general integer query usage)", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "order", required = true) Integer order
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"form_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"form_field\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"order\" : 0 }, { \"form_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"form_field\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"order\" : 0 } ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -318,7 +110,7 @@ public interface FormsApi {
 
 
     /**
-     * PUT /forms/{form_blueprint_uuid} : Update form template
+     * PUT /forms/{form_blueprint_uuid} : Update form template (admin only)
      *
      * @param formBlueprintUuid The UUID of the form blueprint (required)
      * @param formBlueprint  (required)
@@ -326,7 +118,7 @@ public interface FormsApi {
      */
     @Operation(
         operationId = "formsFormBlueprintUuidPut",
-        summary = "Update form template",
+        summary = "Update form template (admin only)",
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated form blueprint", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormBlueprint.class))
@@ -364,8 +156,8 @@ public interface FormsApi {
     /**
      * GET /forms : List form templates
      *
-     * @param limit Maximum number of items to return (optional)
-     * @param offset Number of items to skip before starting to collect the result set (optional)
+     * @param limit Limit of the list (required)
+     * @param offset Offset of the list (required)
      * @return A list of form templates (status code 200)
      */
     @Operation(
@@ -384,8 +176,8 @@ public interface FormsApi {
     )
     
     default ResponseEntity<List<FormBlueprint>> formsGet(
-        @Parameter(name = "limit", description = "Maximum number of items to return", in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = false) Integer limit,
-        @Parameter(name = "offset", description = "Number of items to skip before starting to collect the result set", in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = false) Integer offset
+        @NotNull @Parameter(name = "limit", description = "Limit of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = true) Integer limit,
+        @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -402,14 +194,14 @@ public interface FormsApi {
 
 
     /**
-     * POST /forms : Create form template
+     * POST /forms : Create form template (admin only)
      *
      * @param formBlueprint  (required)
      * @return Created form blueprint (status code 200)
      */
     @Operation(
         operationId = "formsPost",
-        summary = "Create form template",
+        summary = "Create form template (admin only)",
         responses = {
             @ApiResponse(responseCode = "200", description = "Created form blueprint", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormBlueprint.class))

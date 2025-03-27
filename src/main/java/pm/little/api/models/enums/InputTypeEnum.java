@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum InputTypeEnum {
-    TEXT("text"),
+    TEXT("TEXT"),
 
-    NUMBER("number"),
+    NUMBER("NUMBER"),
 
-    FILE("file");
+    FILE("FILE");
 
     private String value;
 

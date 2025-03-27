@@ -1,37 +1,52 @@
 package pm.little.api.models;
 
+import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.UUID;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.springframework.lang.Nullable;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.lang.Nullable;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
+import java.util.*;
 
 /**
  * TaskBlueprint
  */
 @Entity
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-26T00:36:51.210059+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class TaskBlueprint {
   @Id
   @NotNull
   @GeneratedValue(strategy = GenerationType.UUID)
-  private @Nullable UUID taskBlueprintUuid;
+  private UUID taskBlueprintUuid;
 
-  private @Nullable String title;
+  private String title;
 
   private @Nullable String description;
+
+  public TaskBlueprint() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public TaskBlueprint(UUID taskBlueprintUuid, String title) {
+    this.taskBlueprintUuid = taskBlueprintUuid;
+    this.title = title;
+  }
 
   public TaskBlueprint taskBlueprintUuid(UUID taskBlueprintUuid) {
     this.taskBlueprintUuid = taskBlueprintUuid;
@@ -39,11 +54,11 @@ public class TaskBlueprint {
   }
 
   /**
-   * Get taskBlueprintUuid
+   * UUID for a Task Blueprint
    * @return taskBlueprintUuid
    */
-  @Valid
-  @Schema(name = "task_blueprint_uuid", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "task_blueprint_uuid", description = "UUID for a Task Blueprint", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("task_blueprint_uuid")
   public UUID getTaskBlueprintUuid() {
     return taskBlueprintUuid;
@@ -62,8 +77,8 @@ public class TaskBlueprint {
    * Get title
    * @return title
    */
-  
-  @Schema(name = "title", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "title", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("title")
   public String getTitle() {
     return title;
