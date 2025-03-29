@@ -34,14 +34,11 @@ public class Media {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID mediaUUID;
 
-  /**
-   * Gets or Sets type
-   */
+  private @NotNull @Valid TypeEnum type;
 
+  private @NotNull @Valid String title;
 
-  private TypeEnum type;
-
-  private String title;
+  private @Nullable @Valid URI url;
 
   private @Nullable String description;
 
@@ -179,6 +176,11 @@ public class Media {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  @Nullable
+  public @Valid URI getUrl() {
+    return url;
   }
 }
 
