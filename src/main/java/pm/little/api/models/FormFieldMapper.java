@@ -22,6 +22,7 @@ public class FormFieldMapper {
   @EmbeddedId
   private FormFieldMapperId id;
 
+  @NotNull
   private Integer order;
 
   public FormFieldMapper() {

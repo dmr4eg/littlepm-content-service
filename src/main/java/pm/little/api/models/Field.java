@@ -31,14 +31,14 @@ public class Field {
    * Gets or Sets inputType
    */
 
-
+  @NotNull
   private InputTypeEnum inputType;
 
-  private @Nullable Boolean required;
+  private Boolean required;
 
   private String title;
 
-  private @Nullable String description;
+  private String description;
 
   public Field() {
     super();

@@ -22,6 +22,7 @@ public class FormInstance {
   @EmbeddedId
   private FormInstanceId id;
 
+  @NotNull
   private Boolean status;
 
   public FormInstance() {

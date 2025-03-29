@@ -38,7 +38,8 @@ public class FormBlueprint {
 
   private @Nullable String description;
 
-  private @Nullable String callbackUrl;
+  @NotNull
+  private String callbackUrl;
 
   public FormBlueprint() {
     super();

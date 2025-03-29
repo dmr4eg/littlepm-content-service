@@ -34,16 +34,26 @@ public class Media {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID mediaUUID;
 
-  private @NotNull @Valid TypeEnum type;
+  @NotNull
+  @Valid
+  private TypeEnum type;
 
-  private @NotNull @Valid String title;
+  @NotNull @Valid
+  private String title;
 
-  private @Nullable @Valid URI url;
+  @NotNull @Valid
+  private URI url;
 
-  private @Nullable String description;
+  @Nullable
+  private String description;
 
   public Media() {
     super();
+  }
+
+
+  public void setUrl(@NotNull @Valid URI url) {
+    this.url = url;
   }
 
   /**

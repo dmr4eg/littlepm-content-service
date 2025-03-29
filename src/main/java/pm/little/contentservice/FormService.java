@@ -27,9 +27,11 @@ public interface FormService {
 
     public void deleteFormBlueprint(UUID formBlueprintUuid) ;
 
+    public int getFormFieldMapperOrder(UUID formBlueprintUuid, UUID formFieldUuid) ;
+
     public List<FormBlueprint> listFormBlueprints(int limit, int offset) ;
 
-    public FormFieldMapper createFormFieldMapper(FormFieldMapper mapper) ;
+    public FormFieldMapper createFormFieldMapper(FormFieldMapper mapper, int order) ;
 
     public FormFieldMapper getFormFieldMapper(UUID formBlueprintUuid, UUID formFieldUuid) ;
 

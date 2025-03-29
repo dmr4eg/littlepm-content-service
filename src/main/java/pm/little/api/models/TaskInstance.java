@@ -23,6 +23,7 @@ public class TaskInstance {
   @EmbeddedId
   private TaskInstanceId id;
 
+  @NotNull
   private Boolean status;
 
   public TaskInstance() {

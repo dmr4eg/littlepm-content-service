@@ -10,22 +10,23 @@ import pm.little.contentservice.MediaService;
 import pm.little.api.repositories.*;
 import pm.little.contentservice.exceptions.MediaNotFoundException;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class MediaServiceImpl implements MediaService {
 
-    @Autowired
-    private MediaRepository mediaRepository;
+    private final MediaRepository mediaRepository;
+
+    public MediaServiceImpl(MediaRepository mediaRepository) {
+        this.mediaRepository = mediaRepository;
+    }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public Media uploadMedia(MultipartFile file, Media metadata) {
-        String mediaUuid = UUID.randomUUID().toString();
-        String fileUrl = mediaRepository.store(file, mediaUuid);
+        URI fileUrl = URI.create("file://" + file.getOriginalFilename());
 
-        metadata.setMediaUUID(mediaUuid);
         metadata.setUrl(fileUrl);
         return mediaRepository.save(metadata);
     }
@@ -37,7 +38,6 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public Media updateMedia(UUID mediaUuid, Media media) {
         Media existing = getMedia(mediaUuid);
         existing.setTitle(media.getTitle());
@@ -47,7 +47,6 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public void deleteMedia(UUID mediaUuid) {
         Media media = getMedia(mediaUuid);
         mediaRepository.delete(media);
