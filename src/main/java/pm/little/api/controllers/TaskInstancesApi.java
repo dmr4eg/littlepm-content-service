@@ -5,9 +5,9 @@
  */
 package pm.little.api.controllers;
 
+import jakarta.annotation.Generated;
+import pm.little.api.models.dto.*;
 import pm.little.api.models.TaskInstance;
-
-import java.util.List;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,14 +28,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-04T00:03:08.519382+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
 @Tag(name = "task-instances", description = "the task-instances API")
 public interface TaskInstancesApi {
@@ -47,6 +47,9 @@ public interface TaskInstancesApi {
     /**
      * GET /task-instances : List all task instances
      *
+     * @param userUuid The UUID of the user (required)
+     * @param limit Limit of the list (required)
+     * @param offset Offset of the list (required)
      * @return A list of TaskInstance (status code 200)
      */
     @Operation(
@@ -54,7 +57,7 @@ public interface TaskInstancesApi {
         summary = "List all task instances",
         responses = {
             @ApiResponse(responseCode = "200", description = "A list of TaskInstance", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TaskInstance.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TaskDTO.class)))
             })
         },
         security = {
@@ -67,13 +70,15 @@ public interface TaskInstancesApi {
         produces = { "application/json" }
     )
     
-    default ResponseEntity<List<TaskInstance>> taskInstancesGet(
-        
+    default ResponseEntity<List<TaskDTO>> taskInstancesGet(
+        @Parameter(name = "user_uuid", description = "The UUID of the user", required = true, in = ParameterIn.PATH) @PathVariable("user_uuid") UUID userUuid,
+        @NotNull @Parameter(name = "limit", description = "Limit of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = true) Integer limit,
+        @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"id\" : { \"task_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true }, { \"id\" : { \"task_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } ]";
+                    String exampleString = "[ { \"blueprint\" : { \"description\" : \"description\", \"title\" : \"title\", \"task_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, \"progress\" : { \"id\" : { \"task_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } }, { \"blueprint\" : { \"description\" : \"description\", \"title\" : \"title\", \"task_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, \"progress\" : { \"id\" : { \"task_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -95,7 +100,7 @@ public interface TaskInstancesApi {
         summary = "Create a new task instance",
         responses = {
             @ApiResponse(responseCode = "200", description = "Created task instance", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskInstance.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskDTO.class))
             })
         },
         security = {
@@ -109,13 +114,13 @@ public interface TaskInstancesApi {
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<TaskInstance> taskInstancesPost(
+    default ResponseEntity<TaskDTO> taskInstancesPost(
         @Parameter(name = "TaskInstance", description = "", required = true) @Valid @RequestBody TaskInstance taskInstance
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : { \"task_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true }";
+                    String exampleString = "{ \"blueprint\" : { \"description\" : \"description\", \"title\" : \"title\", \"task_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, \"progress\" : { \"id\" : { \"task_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -169,7 +174,7 @@ public interface TaskInstancesApi {
         summary = "Get a user's specific task instance",
         responses = {
             @ApiResponse(responseCode = "200", description = "TaskInstance", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskInstance.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskDTO.class))
             })
         },
         security = {
@@ -182,14 +187,14 @@ public interface TaskInstancesApi {
         produces = { "application/json" }
     )
     
-    default ResponseEntity<TaskInstance> taskInstancesTaskBlueprintUuidUserUuidGet(
+    default ResponseEntity<TaskDTO> taskInstancesTaskBlueprintUuidUserUuidGet(
         @Parameter(name = "task_blueprint_uuid", description = "The UUID of the task blueprint", required = true, in = ParameterIn.PATH) @PathVariable("task_blueprint_uuid") UUID taskBlueprintUuid,
         @Parameter(name = "user_uuid", description = "The UUID of the user", required = true, in = ParameterIn.PATH) @PathVariable("user_uuid") UUID userUuid
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : { \"task_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true }";
+                    String exampleString = "{ \"blueprint\" : { \"description\" : \"description\", \"title\" : \"title\", \"task_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, \"progress\" : { \"id\" : { \"task_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -213,7 +218,7 @@ public interface TaskInstancesApi {
         summary = "Update a task instance",
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated task instance", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskInstance.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskDTO.class))
             })
         },
         security = {
@@ -227,7 +232,7 @@ public interface TaskInstancesApi {
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<TaskInstance> taskInstancesTaskBlueprintUuidUserUuidPut(
+    default ResponseEntity<TaskDTO> taskInstancesTaskBlueprintUuidUserUuidPut(
         @Parameter(name = "task_blueprint_uuid", description = "The UUID of the task blueprint", required = true, in = ParameterIn.PATH) @PathVariable("task_blueprint_uuid") UUID taskBlueprintUuid,
         @Parameter(name = "user_uuid", description = "The UUID of the user", required = true, in = ParameterIn.PATH) @PathVariable("user_uuid") UUID userUuid,
         @Parameter(name = "TaskInstance", description = "", required = true) @Valid @RequestBody TaskInstance taskInstance
@@ -235,7 +240,7 @@ public interface TaskInstancesApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : { \"task_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true }";
+                    String exampleString = "{ \"blueprint\" : { \"description\" : \"description\", \"title\" : \"title\", \"task_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, \"progress\" : { \"id\" : { \"task_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

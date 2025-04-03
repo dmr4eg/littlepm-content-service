@@ -5,6 +5,7 @@
  */
 package pm.little.api.controllers;
 
+import jakarta.annotation.Generated;
 import pm.little.api.models.FormFieldMapper;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -26,15 +27,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-04T00:03:08.519382+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
 @Tag(name = "form-field-mapper", description = "the form-field-mapper API")
 public interface FormFieldMapperApi {
@@ -44,14 +44,14 @@ public interface FormFieldMapperApi {
     }
 
     /**
-     * DELETE /form-field-mapper/{form_blueprint_uuid}/{form_field_uuid} : Delete a form-field mapping (admin only)
+     * DELETE /form-field-mapper/{form_blueprint_uuid}/{field_uuid} : Delete a form-field mapping (admin only)
      *
      * @param formBlueprintUuid The UUID of the form blueprint (required)
      * @param fieldUuid The UUID of the form field (required)
      * @return No Content (status code 204)
      */
     @Operation(
-        operationId = "formFieldMapperFormBlueprintUuidFormFieldUuidDelete",
+        operationId = "formFieldMapperFormBlueprintUuidFieldUuidDelete",
         summary = "Delete a form-field mapping (admin only)",
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content")
@@ -62,10 +62,10 @@ public interface FormFieldMapperApi {
     )
     @RequestMapping(
         method = RequestMethod.DELETE,
-        value = "/form-field-mapper/{form_blueprint_uuid}/{form_field_uuid}"
+        value = "/form-field-mapper/{form_blueprint_uuid}/{field_uuid}"
     )
     
-    default ResponseEntity<Void> formFieldMapperFormBlueprintUuidFormFieldUuidDelete(
+    default ResponseEntity<Void> formFieldMapperFormBlueprintUuidFieldUuidDelete(
         @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid,
         @Parameter(name = "field_uuid", description = "The UUID of the form field", required = true, in = ParameterIn.PATH) @PathVariable("field_uuid") UUID fieldUuid
     ) {
@@ -75,14 +75,14 @@ public interface FormFieldMapperApi {
 
 
     /**
-     * GET /form-field-mapper/{form_blueprint_uuid}/{form_field_uuid} : Get a specific form-field mapping
+     * GET /form-field-mapper/{form_blueprint_uuid}/{field_uuid} : Get a specific form-field mapping
      *
      * @param formBlueprintUuid The UUID of the form blueprint (required)
      * @param fieldUuid The UUID of the form field (required)
      * @return A single FormFieldMapper (status code 200)
      */
     @Operation(
-        operationId = "formFieldMapperFormBlueprintUuidFormFieldUuidGet",
+        operationId = "formFieldMapperFormBlueprintUuidFieldUuidGet",
         summary = "Get a specific form-field mapping",
         responses = {
             @ApiResponse(responseCode = "200", description = "A single FormFieldMapper", content = {
@@ -95,18 +95,18 @@ public interface FormFieldMapperApi {
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/form-field-mapper/{form_blueprint_uuid}/{form_field_uuid}",
+        value = "/form-field-mapper/{form_blueprint_uuid}/{field_uuid}",
         produces = { "application/json" }
     )
     
-    default ResponseEntity<FormFieldMapper> formFieldMapperFormBlueprintUuidFormFieldUuidGet(
+    default ResponseEntity<FormFieldMapper> formFieldMapperFormBlueprintUuidFieldUuidGet(
         @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid,
         @Parameter(name = "field_uuid", description = "The UUID of the form field", required = true, in = ParameterIn.PATH) @PathVariable("field_uuid") UUID fieldUuid
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"form_field_uuid\" : \"a8494f64-0987-4dd0-8405-df19eb58f2ab\" }, \"order\" : 1 }";
+                    String exampleString = "{ \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"field_uuid\" : \"a8494f64-0987-4dd0-8405-df19eb58f2ab\" }, \"sortOrder\" : 1 }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -118,7 +118,7 @@ public interface FormFieldMapperApi {
 
 
     /**
-     * PUT /form-field-mapper/{form_blueprint_uuid}/{form_field_uuid} : Update a form-field mapping (admin only)
+     * PUT /form-field-mapper/{form_blueprint_uuid}/{field_uuid} : Update a form-field mapping (admin only)
      *
      * @param formBlueprintUuid The UUID of the form blueprint (required)
      * @param fieldUuid The UUID of the form field (required)
@@ -126,7 +126,7 @@ public interface FormFieldMapperApi {
      * @return Updated form-field mapping (status code 200)
      */
     @Operation(
-        operationId = "formFieldMapperFormBlueprintUuidFormFieldUuidPut",
+        operationId = "formFieldMapperFormBlueprintUuidFieldUuidPut",
         summary = "Update a form-field mapping (admin only)",
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated form-field mapping", content = {
@@ -139,12 +139,12 @@ public interface FormFieldMapperApi {
     )
     @RequestMapping(
         method = RequestMethod.PUT,
-        value = "/form-field-mapper/{form_blueprint_uuid}/{form_field_uuid}",
+        value = "/form-field-mapper/{form_blueprint_uuid}/{field_uuid}",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<FormFieldMapper> formFieldMapperFormBlueprintUuidFormFieldUuidPut(
+    default ResponseEntity<FormFieldMapper> formFieldMapperFormBlueprintUuidFieldUuidPut(
         @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid,
         @Parameter(name = "field_uuid", description = "The UUID of the form field", required = true, in = ParameterIn.PATH) @PathVariable("field_uuid") UUID fieldUuid,
         @Parameter(name = "FormFieldMapper", description = "", required = true) @Valid @RequestBody FormFieldMapper formFieldMapper
@@ -152,7 +152,7 @@ public interface FormFieldMapperApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"form_field_uuid\" : \"a8494f64-0987-4dd0-8405-df19eb58f2ab\" }, \"order\" : 1 }";
+                    String exampleString = "{ \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"field_uuid\" : \"a8494f64-0987-4dd0-8405-df19eb58f2ab\" }, \"sortOrder\" : 1 }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -166,6 +166,9 @@ public interface FormFieldMapperApi {
     /**
      * GET /form-field-mapper : List all form-field mappings
      *
+     * @param limit Limit of the list (required)
+     * @param offset Offset of the list (required)
+     * @param userUuid The UUID of the user (required)
      * @return A list of FormFieldMapper (status code 200)
      */
     @Operation(
@@ -187,12 +190,14 @@ public interface FormFieldMapperApi {
     )
     
     default ResponseEntity<List<FormFieldMapper>> formFieldMapperGet(
-        
+        @NotNull @Parameter(name = "limit", description = "Limit of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = true) Integer limit,
+        @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset,
+        @Parameter(name = "user_uuid", description = "The UUID of the user", required = true, in = ParameterIn.PATH) @PathVariable("user_uuid") UUID userUuid
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"form_field_uuid\" : \"a8494f64-0987-4dd0-8405-df19eb58f2ab\" }, \"order\" : 1 }, { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"form_field_uuid\" : \"a8494f64-0987-4dd0-8405-df19eb58f2ab\" }, \"order\" : 1 } ]";
+                    String exampleString = "[ { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"field_uuid\" : \"a8494f64-0987-4dd0-8405-df19eb58f2ab\" }, \"sortOrder\" : 1 }, { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"field_uuid\" : \"a8494f64-0987-4dd0-8405-df19eb58f2ab\" }, \"sortOrder\" : 1 } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -234,7 +239,7 @@ public interface FormFieldMapperApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"form_field_uuid\" : \"a8494f64-0987-4dd0-8405-df19eb58f2ab\" }, \"order\" : 1 }";
+                    String exampleString = "{ \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"field_uuid\" : \"a8494f64-0987-4dd0-8405-df19eb58f2ab\" }, \"sortOrder\" : 1 }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

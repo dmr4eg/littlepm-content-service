@@ -23,7 +23,7 @@ public class FormFieldMapper {
   private FormFieldMapperId id;
 
   @NotNull
-  private Integer order;
+  private Integer sortOrder;
 
   public FormFieldMapper() {
     super();
@@ -32,9 +32,9 @@ public class FormFieldMapper {
   /**
    * Constructor with only required parameters
    */
-  public FormFieldMapper(FormFieldMapperId id, Integer order) {
+  public FormFieldMapper(FormFieldMapperId id, Integer sortOrder) {
     this.id = id;
-    this.order = order;
+    this.sortOrder = sortOrder;
   }
 
   public FormFieldMapper id(FormFieldMapperId id) {
@@ -57,24 +57,24 @@ public class FormFieldMapper {
     this.id = id;
   }
 
-  public FormFieldMapper order(Integer order) {
-    this.order = order;
+  public FormFieldMapper sortOrder(Integer sortOrder) {
+    this.sortOrder = sortOrder;
     return this;
   }
 
   /**
    * Order or position within a list
-   * @return order
+   * @return sortOrder
    */
   @NotNull 
-  @Schema(name = "order", description = "Order or position within a list", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("order")
+  @Schema(name = "sortOrder", description = "Order or position within a list", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("sortOrder")
   public Integer getOrder() {
-    return order;
+    return sortOrder;
   }
 
-  public void setOrder(Integer order) {
-    this.order = order;
+  public void setOrder(Integer sortOrder) {
+    this.sortOrder = sortOrder;
   }
 
   @Override
@@ -87,12 +87,12 @@ public class FormFieldMapper {
     }
     FormFieldMapper formFieldMapper = (FormFieldMapper) o;
     return Objects.equals(this.id, formFieldMapper.id) &&
-        Objects.equals(this.order, formFieldMapper.order);
+        Objects.equals(this.sortOrder, formFieldMapper.sortOrder);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, order);
+    return Objects.hash(id, sortOrder);
   }
 
   @Override
@@ -100,7 +100,7 @@ public class FormFieldMapper {
     StringBuilder sb = new StringBuilder();
     sb.append("class FormFieldMapper {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    order: ").append(toIndentedString(order)).append("\n");
+    sb.append("    sortOrder: ").append(toIndentedString(sortOrder)).append("\n");
     sb.append("}");
     return sb.toString();
   }

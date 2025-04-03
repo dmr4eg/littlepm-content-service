@@ -11,12 +11,13 @@ import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGe
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(
-    nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
+        nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
 )
 @ComponentScan(
-    basePackages = {"pm.little.api", "pm.little.api.controllers" , "pm.little.api.confs"},
-    nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
+        basePackages = {"pm.little.api", "pm.little.api.controllers" , "pm.little.api.confs", "pm.little.contentservice"},
+        nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
 )
+
 @EnableJpaRepositories(basePackages = "pm.little.api.repositories")
 public class OpenApiGeneratorApplication {
 

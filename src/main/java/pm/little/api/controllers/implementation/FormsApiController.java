@@ -1,29 +1,29 @@
 package pm.little.api.controllers.implementation;
 
-import pm.little.api.controllers.FormsApi;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import pm.little.api.controllers.FormsApi;
+import pm.little.api.models.FormBlueprint;
+import pm.little.contentservice.FormService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Controller
-@RequestMapping("${openapi.projectDay.base-path:}")
+@RequestMapping("${openapi.some-base-path:}") // Adjust path if needed
 public class FormsApiController implements FormsApi {
 
     private final NativeWebRequest request;
+    private final FormService formService;
 
     @Autowired
-    public FormsApiController(NativeWebRequest request) {
+    public FormsApiController(NativeWebRequest request, FormService formService) {
         this.request = request;
+        this.formService = formService;
     }
 
     @Override
@@ -31,4 +31,51 @@ public class FormsApiController implements FormsApi {
         return Optional.ofNullable(request);
     }
 
+    /**
+     * GET /forms?limit=...&offset=...
+     */
+    @Override
+    public ResponseEntity<List<FormBlueprint>> formsGet(Integer limit, Integer offset) {
+        List<FormBlueprint> formBlueprints = formService.listFormBlueprints(limit, offset);
+        return ResponseEntity.ok(formBlueprints);
+    }
+
+    /**
+     * POST /forms
+     * (Create a new form blueprint, admin only)
+     */
+    @Override
+    public ResponseEntity<FormBlueprint> formsPost(FormBlueprint formBlueprint) {
+        FormBlueprint created = formService.createFormBlueprint(formBlueprint);
+        return ResponseEntity.ok(created);
+    }
+
+    /**
+     * GET /forms/{form_blueprint_uuid}
+     */
+    @Override
+    public ResponseEntity<FormBlueprint> formsFormBlueprintUuidGet(UUID formBlueprintUuid) {
+        FormBlueprint blueprint = formService.getFormBlueprint(formBlueprintUuid);
+        return ResponseEntity.ok(blueprint);
+    }
+
+    /**
+     * PUT /forms/{form_blueprint_uuid}
+     * (Update an existing form blueprint, admin only)
+     */
+    @Override
+    public ResponseEntity<FormBlueprint> formsFormBlueprintUuidPut(UUID formBlueprintUuid, FormBlueprint formBlueprint) {
+        FormBlueprint updated = formService.updateFormBlueprint(formBlueprintUuid, formBlueprint);
+        return ResponseEntity.ok(updated);
+    }
+
+    /**
+     * DELETE /forms/{form_blueprint_uuid}
+     * (Delete a form blueprint, admin only)
+     */
+    @Override
+    public ResponseEntity<Void> formsFormBlueprintUuidDelete(UUID formBlueprintUuid) {
+        formService.deleteFormBlueprint(formBlueprintUuid);
+        return ResponseEntity.noContent().build();
+    }
 }

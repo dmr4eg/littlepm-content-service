@@ -5,6 +5,8 @@
  */
 package pm.little.api.controllers;
 
+import jakarta.annotation.Generated;
+import pm.little.api.models.dto.*;
 import pm.little.api.models.FormInstance;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -26,15 +28,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-04T00:03:08.519382+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
 @Tag(name = "form-instances", description = "the form-instances API")
 public interface FormInstancesApi {
@@ -86,7 +87,7 @@ public interface FormInstancesApi {
         summary = "Get a user's specific form instance",
         responses = {
             @ApiResponse(responseCode = "200", description = "FormInstance", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = FormInstance.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = FormDTO.class))
             })
         },
         security = {
@@ -99,14 +100,14 @@ public interface FormInstancesApi {
         produces = { "application/json" }
     )
     
-    default ResponseEntity<FormInstance> formInstancesFormBlueprintUuidUserUuidGet(
+    default ResponseEntity<FormDTO> formInstancesFormBlueprintUuidUserUuidGet(
         @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid,
         @Parameter(name = "user_uuid", description = "The UUID of the user", required = true, in = ParameterIn.PATH) @PathVariable("user_uuid") UUID userUuid
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true }";
+                    String exampleString = "{ \"blueprint\" : { \"callback_url\" : \"callback_url\", \"form_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"description\" : \"description\", \"title\" : \"title\" }, \"instance\" : { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -130,7 +131,7 @@ public interface FormInstancesApi {
         summary = "Update a form instance",
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated form instance", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = FormInstance.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = FormDTO.class))
             })
         },
         security = {
@@ -144,7 +145,7 @@ public interface FormInstancesApi {
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<FormInstance> formInstancesFormBlueprintUuidUserUuidPut(
+    default ResponseEntity<FormDTO> formInstancesFormBlueprintUuidUserUuidPut(
         @Parameter(name = "form_blueprint_uuid", description = "The UUID of the form blueprint", required = true, in = ParameterIn.PATH) @PathVariable("form_blueprint_uuid") UUID formBlueprintUuid,
         @Parameter(name = "user_uuid", description = "The UUID of the user", required = true, in = ParameterIn.PATH) @PathVariable("user_uuid") UUID userUuid,
         @Parameter(name = "FormInstance", description = "", required = true) @Valid @RequestBody FormInstance formInstance
@@ -152,7 +153,7 @@ public interface FormInstancesApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true }";
+                    String exampleString = "{ \"blueprint\" : { \"callback_url\" : \"callback_url\", \"form_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"description\" : \"description\", \"title\" : \"title\" }, \"instance\" : { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -166,6 +167,9 @@ public interface FormInstancesApi {
     /**
      * GET /form-instances : List all form instances
      *
+     * @param userUuid The UUID of the user (required)
+     * @param limit Limit of the list (required)
+     * @param offset Offset of the list (required)
      * @return A list of FormInstance (status code 200)
      */
     @Operation(
@@ -173,7 +177,7 @@ public interface FormInstancesApi {
         summary = "List all form instances",
         responses = {
             @ApiResponse(responseCode = "200", description = "A list of FormInstance", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormInstance.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormDTO.class)))
             })
         },
         security = {
@@ -186,13 +190,15 @@ public interface FormInstancesApi {
         produces = { "application/json" }
     )
     
-    default ResponseEntity<List<FormInstance>> formInstancesGet(
-        
+    default ResponseEntity<List<FormDTO>> formInstancesGet(
+        @Parameter(name = "user_uuid", description = "The UUID of the user", required = true, in = ParameterIn.PATH) @PathVariable("user_uuid") UUID userUuid,
+        @NotNull @Parameter(name = "limit", description = "Limit of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = true) Integer limit,
+        @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true }, { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } ]";
+                    String exampleString = "[ { \"blueprint\" : { \"callback_url\" : \"callback_url\", \"form_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"description\" : \"description\", \"title\" : \"title\" }, \"instance\" : { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } }, { \"blueprint\" : { \"callback_url\" : \"callback_url\", \"form_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"description\" : \"description\", \"title\" : \"title\" }, \"instance\" : { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -214,7 +220,7 @@ public interface FormInstancesApi {
         summary = "Create a form instance (user)",
         responses = {
             @ApiResponse(responseCode = "200", description = "Created form instance", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = FormInstance.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = FormDTO.class))
             })
         },
         security = {
@@ -228,13 +234,13 @@ public interface FormInstancesApi {
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<FormInstance> formInstancesPost(
+    default ResponseEntity<FormDTO> formInstancesPost(
         @Parameter(name = "FormInstance", description = "", required = true) @Valid @RequestBody FormInstance formInstance
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true }";
+                    String exampleString = "{ \"blueprint\" : { \"callback_url\" : \"callback_url\", \"form_blueprint_uuid\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"description\" : \"description\", \"title\" : \"title\" }, \"instance\" : { \"id\" : { \"form_blueprint_uuid\" : \"665c599d-5c8d-4d20-aaab-7ffaba150606\", \"user_uuid\" : \"66de88ad-5c8d-4d20-a0ab-bbb7ccc15333\" }, \"status\" : true } }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

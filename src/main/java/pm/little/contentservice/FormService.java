@@ -2,7 +2,6 @@
 package pm.little.contentservice;
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
 import pm.little.api.models.FormBlueprint;
 import pm.little.api.models.FormFieldMapper;
 import pm.little.api.models.FormInstance;
@@ -31,11 +30,26 @@ public interface FormService {
 
     public List<FormBlueprint> listFormBlueprints(int limit, int offset) ;
 
-    public FormFieldMapper createFormFieldMapper(FormFieldMapper mapper, int order) ;
+    public FormFieldMapper createFormFieldMapper(FormFieldMapper mapper, int sortOrder) ;
 
     public FormFieldMapper getFormFieldMapper(UUID formBlueprintUuid, UUID formFieldUuid) ;
 
-    public FormInstance createFormInstance(FormInstance instance) ;
+    public FormDTO createFormInstance(FormInstance instance) ;
 
-    public FormInstance getFormInstance(UUID formBlueprintUuid, UUID userUuid) ;
+    public FormDTO getFormInstance(UUID formBlueprintUuid, UUID userUuid) ;
+
+    public List<FormInstance> listFormInstances(int limit, int offset);
+
+    public List<FormDTO> listFormInstancesAsDTO(int limit, int offset);
+
+    public FormDTO updateFormInstance(UUID formBlueprintUuid, UUID userUuid, FormInstance updated);
+
+    public void deleteFormInstance(UUID formBlueprintUuid, UUID userUuid);
+
+    public List<FormFieldMapper> listFormFieldMappers(int limit, int offset);
+
+    public FormFieldMapper updateFormFieldMapper(UUID formBlueprintUuid, UUID fieldUuid, FormFieldMapper updated);
+
+    public void deleteFormFieldMapper(UUID formBlueprintUuid, UUID fieldUuid);
+
 }

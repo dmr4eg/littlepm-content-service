@@ -2,7 +2,6 @@ package pm.little.contentservice.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pm.little.api.models.Media;
@@ -25,9 +24,24 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public Media uploadMedia(MultipartFile file, Media metadata) {
-        URI fileUrl = URI.create("file://" + file.getOriginalFilename());
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("Uploaded file is empty");
+        }
 
-        metadata.setUrl(fileUrl);
+        // For demonstration, let's pretend you store it at /uploads/<filename>.
+        // In reality, you might use Amazon S3, local disk, etc.
+        String filename = file.getOriginalFilename();
+        // storeTheFileSomewhere(file, filename);
+
+        // Possibly generate a random UUID
+        if (metadata.getMediaUUID() == null) {
+            metadata.setMediaUUID(UUID.randomUUID());
+        }
+
+        // Maybe store the URL or path
+        metadata.setUrl(URI.create("/uploads/" + filename));
+
+        // Save the DB record
         return mediaRepository.save(metadata);
     }
 

@@ -11,5 +11,5 @@ import java.util.UUID;
 @Repository
 @RepositoryRestResource(exported = false)
 public interface MediaRepository extends JpaRepository<Media, UUID> {
-    String store(MultipartFile file, String mediaUuid);
+//    String store(MultipartFile file, String mediaUUID);
 }

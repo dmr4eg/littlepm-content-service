@@ -1,30 +1,30 @@
 package pm.little.api.controllers.implementation;
 
-import pm.little.api.controllers.TaskInstancesApi;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
+import pm.little.api.controllers.TaskInstancesApi;
+import pm.little.api.models.TaskInstance;
+import pm.little.api.models.dto.TaskDTO;
+import pm.little.contentservice.TaskService;
 
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Controller
-@RequestMapping("${openapi.projectDay.base-path:}")
+@RequestMapping("${openapi.some-base-path:}") // Adjust path if needed
 public class TaskInstancesApiController implements TaskInstancesApi {
 
     private final NativeWebRequest request;
+    private final TaskService taskService;
 
     @Autowired
-    public TaskInstancesApiController(NativeWebRequest request) {
+    public TaskInstancesApiController(NativeWebRequest request, TaskService taskService) {
         this.request = request;
+        this.taskService = taskService;
     }
 
     @Override
@@ -32,4 +32,77 @@ public class TaskInstancesApiController implements TaskInstancesApi {
         return Optional.ofNullable(request);
     }
 
+    /**
+     * GET /task-instances
+     * List all task instances (return as TaskDTO)
+     */
+    @Override
+    public ResponseEntity<List<TaskDTO>> taskInstancesGet(
+            UUID userUuid,
+            Integer limit,
+            Integer offset
+    ) {
+        // Example usage if implemented in TaskService:
+        List<TaskDTO> dtos = taskService.listTaskInstancesAsDTO(limit, offset);
+        return ResponseEntity.ok(dtos);
+
+        // Otherwise, if not implemented, do:
+        // return ResponseEntity.status(501).build();
+    }
+
+    /**
+     * POST /task-instances
+     * Create a new task instance, returning TaskDTO
+     */
+    @Override
+    public ResponseEntity<TaskDTO> taskInstancesPost(TaskInstance taskInstance) {
+        TaskDTO createdDto = taskService.createTaskInstance(taskInstance);
+        return ResponseEntity.ok(createdDto);
+    }
+
+    /**
+     * GET /task-instances/{task_blueprint_uuid}/{user_uuid}
+     * Get a user's specific task instance (as TaskDTO)
+     */
+    @Override
+    public ResponseEntity<TaskDTO> taskInstancesTaskBlueprintUuidUserUuidGet(
+            UUID taskBlueprintUuid,
+            UUID userUuid
+    ) {
+        TaskDTO dto = taskService.getTaskInstance(taskBlueprintUuid, userUuid);
+        return ResponseEntity.ok(dto);
+    }
+
+    /**
+     * PUT /task-instances/{task_blueprint_uuid}/{user_uuid}
+     * Update a task instance
+     */
+    @Override
+    public ResponseEntity<TaskDTO> taskInstancesTaskBlueprintUuidUserUuidPut(
+            UUID taskBlueprintUuid,
+            UUID userUuid,
+            TaskInstance taskInstance
+    ) {
+        // If you only need to update boolean status:
+        //   TaskDTO updatedDto = taskService.updateTaskStatus(taskBlueprintUuid, userUuid, taskInstance.getStatus());
+        // Or if you want to update the entire record:
+        TaskDTO updatedDto = taskService.updateTaskInstance(taskBlueprintUuid, userUuid, taskInstance);
+        return ResponseEntity.ok(updatedDto);
+    }
+
+    /**
+     * DELETE /task-instances/{task_blueprint_uuid}/{user_uuid}
+     * Delete a task instance
+     */
+    @Override
+    public ResponseEntity<Void> taskInstancesTaskBlueprintUuidUserUuidDelete(
+            UUID taskBlueprintUuid,
+            UUID userUuid
+    ) {
+        // If implemented in TaskService:
+        // taskService.deleteTaskInstance(taskBlueprintUuid, userUuid);
+        // return ResponseEntity.noContent().build();
+
+        return ResponseEntity.status(501).build();
+    }
 }

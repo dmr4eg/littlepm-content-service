@@ -5,6 +5,7 @@
  */
 package pm.little.api.controllers;
 
+import jakarta.annotation.Generated;
 import pm.little.api.models.Media;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -26,15 +27,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-04T00:03:08.519382+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
 @Tag(name = "media", description = "the media API")
 public interface MediaApi {
@@ -197,11 +196,13 @@ public interface MediaApi {
     /**
      * POST /media : Upload new media (admin only)
      *
-     * @param media  (required)
+     * @param file The file to upload (required)
+     * @param description Media description (optional)
+     * @param type Media type (e.g. video, image, etc.) (optional)
      * @return The uploaded media metadata (status code 200)
      */
     @Operation(
-        operationId = "mediaPost",
+        operationId = "mediaPostMultipart",
         summary = "Upload new media (admin only)",
         responses = {
             @ApiResponse(responseCode = "200", description = "The uploaded media metadata", content = {
@@ -216,11 +217,13 @@ public interface MediaApi {
         method = RequestMethod.POST,
         value = "/media",
         produces = { "application/json" },
-        consumes = { "application/json" }
+        consumes = { "multipart/form-data" }
     )
     
-    default ResponseEntity<Media> mediaPost(
-        @Parameter(name = "Media", description = "", required = true) @Valid @RequestBody Media media
+    default ResponseEntity<Media> mediaPostMultipart(
+        @Parameter(name = "file", description = "The file to upload", required = true) @RequestPart(value = "file", required = true) MultipartFile file,
+        @Parameter(name = "description", description = "Media description") @Valid @RequestParam(value = "description", required = false) String description,
+        @Parameter(name = "type", description = "Media type (e.g. video, image, etc.)") @Valid @RequestParam(value = "type", required = false) String type
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {

@@ -1,7 +1,6 @@
 package pm.little.contentservice;
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.multipart.MultipartFile;
 import pm.little.api.models.Media;
 import pm.little.contentservice.exceptions.MediaNotFoundException;
