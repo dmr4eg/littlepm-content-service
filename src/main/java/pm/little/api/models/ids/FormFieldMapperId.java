@@ -16,12 +16,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @Embeddable
 @Schema(name = "FormFieldMapperId", description = "Composite ID for FormFieldMapper")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-07T13:23:35.902845+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class FormFieldMapperId {
 
   private UUID formBlueprintUuid;
 
-  private UUID formFieldUuid;
+  private UUID fieldUuid;
 
   public FormFieldMapperId() {
     super();
@@ -30,9 +30,9 @@ public class FormFieldMapperId {
   /**
    * Constructor with only required parameters
    */
-  public FormFieldMapperId(UUID formBlueprintUuid, UUID formFieldUuid) {
+  public FormFieldMapperId(UUID formBlueprintUuid, UUID fieldUuid) {
     this.formBlueprintUuid = formBlueprintUuid;
-    this.formFieldUuid = formFieldUuid;
+    this.fieldUuid = fieldUuid;
   }
 
   public FormFieldMapperId formBlueprintUuid(UUID formBlueprintUuid) {
@@ -55,24 +55,24 @@ public class FormFieldMapperId {
     this.formBlueprintUuid = formBlueprintUuid;
   }
 
-  public FormFieldMapperId formFieldUuid(UUID formFieldUuid) {
-    this.formFieldUuid = formFieldUuid;
+  public FormFieldMapperId fieldUuid(UUID fieldUuid) {
+    this.fieldUuid = fieldUuid;
     return this;
   }
 
   /**
    * UUID for a Form Field
-   * @return formFieldUuid
+   * @return fieldUuid
    */
   @NotNull @Valid 
-  @Schema(name = "form_field_uuid", description = "UUID for a Form Field", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("form_field_uuid")
-  public UUID getFormFieldUuid() {
-    return formFieldUuid;
+  @Schema(name = "field_uuid", description = "UUID for a Form Field", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("field_uuid")
+  public UUID getFieldUuid() {
+    return fieldUuid;
   }
 
-  public void setFormFieldUuid(UUID formFieldUuid) {
-    this.formFieldUuid = formFieldUuid;
+  public void setFieldUuid(UUID fieldUuid) {
+    this.fieldUuid = fieldUuid;
   }
 
   @Override
@@ -85,12 +85,12 @@ public class FormFieldMapperId {
     }
     FormFieldMapperId formFieldMapperId = (FormFieldMapperId) o;
     return Objects.equals(this.formBlueprintUuid, formFieldMapperId.formBlueprintUuid) &&
-        Objects.equals(this.formFieldUuid, formFieldMapperId.formFieldUuid);
+        Objects.equals(this.fieldUuid, formFieldMapperId.fieldUuid);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(formBlueprintUuid, formFieldUuid);
+    return Objects.hash(formBlueprintUuid, fieldUuid);
   }
 
   @Override
@@ -98,7 +98,7 @@ public class FormFieldMapperId {
     StringBuilder sb = new StringBuilder();
     sb.append("class FormFieldMapperId {\n");
     sb.append("    formBlueprintUuid: ").append(toIndentedString(formBlueprintUuid)).append("\n");
-    sb.append("    formFieldUuid: ").append(toIndentedString(formFieldUuid)).append("\n");
+    sb.append("    fieldUuid: ").append(toIndentedString(fieldUuid)).append("\n");
     sb.append("}");
     return sb.toString();
   }

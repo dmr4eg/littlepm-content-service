@@ -69,11 +69,11 @@ public class FormFieldMapper {
   @NotNull 
   @Schema(name = "sortOrder", description = "Order or position within a list", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("sortOrder")
-  public Integer getOrder() {
+  public Integer getSortOrder() {
     return sortOrder;
   }
 
-  public void setOrder(Integer sortOrder) {
+  public void setSortOrder(Integer sortOrder) {
     this.sortOrder = sortOrder;
   }
 

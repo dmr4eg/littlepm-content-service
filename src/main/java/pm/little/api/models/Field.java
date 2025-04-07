@@ -17,15 +17,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import pm.little.api.models.enums.InputTypeEnum;
 
 /**
- * FormField
+ * Field
  */
-@Entity
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-27T23:47:32.256351+01:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-06T03:36:51.581853+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class Field {
-  @Id
-  @NotNull
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID formFieldUuid;
+
+  private UUID fieldUuid;
 
   /**
    * Gets or Sets inputType
@@ -47,30 +45,30 @@ public class Field {
   /**
    * Constructor with only required parameters
    */
-  public Field(UUID formFieldUuid, InputTypeEnum inputType, String title) {
-    this.formFieldUuid = formFieldUuid;
+  public Field(UUID fieldUuid, InputTypeEnum inputType, String title) {
+    this.fieldUuid = fieldUuid;
     this.inputType = inputType;
     this.title = title;
   }
 
-  public Field formFieldUuid(UUID formFieldUuid) {
-    this.formFieldUuid = formFieldUuid;
+  public Field fieldUuid(UUID fieldUuid) {
+    this.fieldUuid = fieldUuid;
     return this;
   }
 
   /**
    * UUID for a Form Field
-   * @return formFieldUuid
+   * @return fieldUuid
    */
   @NotNull @Valid 
-  @Schema(name = "form_field_uuid", description = "UUID for a Form Field", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("form_field_uuid")
-  public UUID getFormFieldUuid() {
-    return formFieldUuid;
+  @Schema(name = "field_uuid", description = "UUID for a Form Field", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("field_uuid")
+  public UUID getFieldUuid() {
+    return fieldUuid;
   }
 
-  public void setFormFieldUuid(UUID formFieldUuid) {
-    this.formFieldUuid = formFieldUuid;
+  public void setFieldUuid(UUID fieldUuid) {
+    this.fieldUuid = fieldUuid;
   }
 
   public Field inputType(InputTypeEnum inputType) {
@@ -162,7 +160,7 @@ public class Field {
       return false;
     }
     Field field = (Field) o;
-    return Objects.equals(this.formFieldUuid, field.formFieldUuid) &&
+    return Objects.equals(this.fieldUuid, field.fieldUuid) &&
         Objects.equals(this.inputType, field.inputType) &&
         Objects.equals(this.required, field.required) &&
         Objects.equals(this.title, field.title) &&
@@ -171,14 +169,14 @@ public class Field {
 
   @Override
   public int hashCode() {
-    return Objects.hash(formFieldUuid, inputType, required, title, description);
+    return Objects.hash(fieldUuid, inputType, required, title, description);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FormField {\n");
-    sb.append("    formFieldUuid: ").append(toIndentedString(formFieldUuid)).append("\n");
+    sb.append("class Field {\n");
+    sb.append("    fieldUuid: ").append(toIndentedString(fieldUuid)).append("\n");
     sb.append("    inputType: ").append(toIndentedString(inputType)).append("\n");
     sb.append("    required: ").append(toIndentedString(required)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");

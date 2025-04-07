@@ -58,7 +58,7 @@ public class FormFieldMapperApiController implements FormFieldMapperApi {
     @Override
     public ResponseEntity<FormFieldMapper> formFieldMapperPost(FormFieldMapper formFieldMapper) {
         // The sort order can come from formFieldMapper.getOrder().
-        FormFieldMapper created = formService.createFormFieldMapper(formFieldMapper, formFieldMapper.getOrder());
+        FormFieldMapper created = formService.createFormFieldMapper(formFieldMapper, formFieldMapper.getSortOrder());
         return ResponseEntity.ok(created);
     }
 

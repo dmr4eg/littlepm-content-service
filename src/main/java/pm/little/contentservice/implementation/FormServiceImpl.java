@@ -87,17 +87,32 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public FormFieldMapper createFormFieldMapper(FormFieldMapper mapper, int sortOrder) {
+        FormFieldMapperId id = mapper.getId();
+        UUID formBlueprintUuid = id.getFormBlueprintUuid();
+        UUID fieldUuid = id.getFieldUuid();
+        if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
+            throw new FormBlueprintNotFoundException(formBlueprintUuid);
+        }
+        if (!fieldRepository.existsById(fieldUuid)) {
+            throw new FormFieldNotFoundException(fieldUuid);
+        }
         FormFieldMapper existing = formFieldMapperRepository.findById(mapper.getId()).orElse(null);
         if (existing != null) {
             return existing;
         }
-        mapper.setOrder(sortOrder);
+        mapper.setSortOrder(sortOrder);
         return formFieldMapperRepository.save(mapper);
     }
 
     @Override
-    public FormFieldMapper getFormFieldMapper(UUID formBlueprintUuid, UUID formFieldUuid) {
-        FormFieldMapperId id = new FormFieldMapperId(formBlueprintUuid, formFieldUuid);
+    public FormFieldMapper getFormFieldMapper(UUID formBlueprintUuid, UUID fieldUuid) {
+        if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
+            throw new FormBlueprintNotFoundException(formBlueprintUuid);
+        }
+        if (!fieldRepository.existsById(fieldUuid)) {
+            throw new FormFieldNotFoundException(fieldUuid);
+        }
+        FormFieldMapperId id = new FormFieldMapperId(formBlueprintUuid, fieldUuid);
         if (!formFieldMapperRepository.existsById(id)) {
             throw new FormFieldNotFoundException(id);
         }
@@ -106,25 +121,34 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public int getFormFieldMapperOrder(UUID formBlueprintUuid, UUID formFieldUuid) {
-        FormFieldMapperId id = new FormFieldMapperId(formBlueprintUuid, formFieldUuid);
+    public int getFormFieldMapperOrder(UUID formBlueprintUuid, UUID fieldUuid) {
+        if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
+            throw new FormBlueprintNotFoundException(formBlueprintUuid);
+        }
+        if (!fieldRepository.existsById(fieldUuid)) {
+            throw new FormFieldNotFoundException(fieldUuid);
+        }
+        FormFieldMapperId id = new FormFieldMapperId(formBlueprintUuid, fieldUuid);
         if (!formFieldMapperRepository.existsById(id)) {
             throw new FormFieldNotFoundException(id);
         }
         return formFieldMapperRepository.findById(id)
                 .orElseThrow(() -> new FormFieldNotFoundException(id))
-                .getOrder();
+                .getSortOrder();
     }
 
     private FormDTO toFormDTO(FormInstance instance) {
-        // We find the associated blueprint (assuming it should be attached in the DTO).
-        UUID blueprintUuid = instance.getId().getFormBlueprintUuid();
-        FormBlueprint blueprint = formBlueprintRepository.findById(blueprintUuid)
-                .orElseThrow(() -> new FormBlueprintNotFoundException(blueprintUuid));
+        FormInstanceId id = instance.getId();
+        UUID formBlueprintUuid = id.getFormBlueprintUuid();
+        if (!formInstanceRepository.existsById(id)) {
+            throw new FormInstanceNotFoundException(id);
+        }
+        FormBlueprint formBlueprint = formBlueprintRepository.findById(formBlueprintUuid)
+                .orElseThrow(() -> new FormBlueprintNotFoundException(formBlueprintUuid));
 
         // Build the DTO
         FormDTO dto = new FormDTO();
-        dto.setBlueprint(blueprint);
+        dto.setBlueprint(formBlueprint);
         dto.setInstance(instance);
         return dto;
     }
@@ -135,6 +159,14 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public FormDTO createFormInstance(FormInstance instance) {
+        FormInstanceId formInstanceId = instance.getId();
+        UUID formBlueprintUuid = formInstanceId.getFormBlueprintUuid();
+        if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
+            throw new FormBlueprintNotFoundException(formBlueprintUuid);
+        }
+        if (!formInstanceRepository.existsById(formInstanceId)) {
+            throw new FormInstanceNotFoundException(formInstanceId);
+        }
         FormInstance existing = formInstanceRepository.findById(instance.getId()).orElse(null);
         if (existing != null) {
             // If it already exists, just return the DTO of that existing instance
@@ -146,6 +178,9 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public FormDTO getFormInstance(UUID formBlueprintUuid, UUID userUuid) {
+        if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
+            throw new FormBlueprintNotFoundException(formBlueprintUuid);
+        }
         FormInstanceId id = new FormInstanceId(formBlueprintUuid, userUuid);
         FormInstance instance = formInstanceRepository.findById(id)
                 .orElseThrow(() -> new FormInstanceNotFoundException(id));
@@ -154,13 +189,14 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public FormDTO updateFormInstance(UUID formBlueprintUuid, UUID userUuid, FormInstance updated) {
+        if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
+            throw new FormBlueprintNotFoundException(formBlueprintUuid);
+        }
         FormInstanceId id = new FormInstanceId(formBlueprintUuid, userUuid);
-
         // Make sure it exists:
         if (!formInstanceRepository.existsById(id)) {
             throw new FormInstanceNotFoundException(id);
         }
-
         // Load existing, update its fields:
         FormInstance existing = formInstanceRepository.findById(id)
                 .orElseThrow(() -> new FormInstanceNotFoundException(id));
@@ -173,6 +209,9 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public void deleteFormInstance(UUID formBlueprintUuid, UUID userUuid) {
+        if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
+            throw new FormBlueprintNotFoundException(formBlueprintUuid);
+        }
         FormInstanceId id = new FormInstanceId(formBlueprintUuid, userUuid);
         if (!formInstanceRepository.existsById(id)) {
             throw new FormInstanceNotFoundException(id);
@@ -206,19 +245,31 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public FormFieldMapper updateFormFieldMapper(UUID formBlueprintUuid, UUID formFieldUuid, FormFieldMapper updated) {
-        FormFieldMapperId id = new FormFieldMapperId(formBlueprintUuid, formFieldUuid);
+    public FormFieldMapper updateFormFieldMapper(UUID formBlueprintUuid, UUID fieldUuid, FormFieldMapper updated) {
+        if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
+            throw new FormBlueprintNotFoundException(formBlueprintUuid);
+        }
+        if (!fieldRepository.existsById(fieldUuid)) {
+            throw new FormFieldNotFoundException(fieldUuid);
+        }
+        FormFieldMapperId id = new FormFieldMapperId(formBlueprintUuid, fieldUuid);
         if (!formFieldMapperRepository.existsById(id)) {
             throw new FormFieldNotFoundException(id);
         }
-        FormFieldMapper existing = getFormFieldMapper(formBlueprintUuid, formFieldUuid);
-        existing.setOrder(updated.getOrder());
+        FormFieldMapper existing = getFormFieldMapper(formBlueprintUuid, fieldUuid);
+        existing.setSortOrder(updated.getSortOrder());
         return formFieldMapperRepository.save(existing);
     }
 
     @Override
-    public void deleteFormFieldMapper(UUID formBlueprintUuid, UUID formFieldUuid){
-        FormFieldMapperId id = new FormFieldMapperId(formBlueprintUuid, formFieldUuid);
+    public void deleteFormFieldMapper(UUID formBlueprintUuid, UUID fieldUuid){
+        if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
+            throw new FormBlueprintNotFoundException(formBlueprintUuid);
+        }
+        if (!fieldRepository.existsById(fieldUuid)) {
+            throw new FormFieldNotFoundException(fieldUuid);
+        }
+        FormFieldMapperId id = new FormFieldMapperId(formBlueprintUuid, fieldUuid);
         if (!formFieldMapperRepository.existsById(id)) {
             throw new FormFieldNotFoundException(id);
         }

@@ -51,11 +51,6 @@ public class Media {
     super();
   }
 
-
-  public void setUrl(@NotNull @Valid URI url) {
-    this.url = url;
-  }
-
   /**
    * Constructor with only required parameters
    */
@@ -103,6 +98,26 @@ public class Media {
 
   public void setType(TypeEnum type) {
     this.type = type;
+  }
+
+  public Media url(URI url) {
+    this.url = url;
+    return this;
+  }
+
+  /**
+   * URL for the media file
+   * @return url
+   */
+  @Valid 
+  @Schema(name = "url", description = "URL for the media file", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("url")
+  public URI getUrl() {
+    return url;
+  }
+
+  public void setUrl(URI url) {
+    this.url = url;
   }
 
   public Media title(String title) {
@@ -156,13 +171,14 @@ public class Media {
     Media media = (Media) o;
     return Objects.equals(this.mediaUUID, media.mediaUUID) &&
         Objects.equals(this.type, media.type) &&
+        Objects.equals(this.url, media.url) &&
         Objects.equals(this.title, media.title) &&
         Objects.equals(this.description, media.description);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(mediaUUID, type, title, description);
+    return Objects.hash(mediaUUID, type, url, title, description);
   }
 
   @Override
@@ -171,6 +187,7 @@ public class Media {
     sb.append("class Media {\n");
     sb.append("    mediaUUID: ").append(toIndentedString(mediaUUID)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("}");
@@ -186,11 +203,6 @@ public class Media {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  @Nullable
-  public @Valid URI getUrl() {
-    return url;
   }
 }
 

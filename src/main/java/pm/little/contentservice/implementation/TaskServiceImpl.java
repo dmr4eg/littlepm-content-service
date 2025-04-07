@@ -31,12 +31,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskBlueprint createTaskBlueprint(TaskBlueprint blueprint) {
-        TaskBlueprint existing = taskBlueprintRepository.findById(blueprint.getTaskBlueprintUuid()).orElse(null);
+    public TaskBlueprint createTaskBlueprint(TaskBlueprint taskBlueprint) {
+        TaskBlueprint existing = taskBlueprintRepository.findById(taskBlueprint.getTaskBlueprintUuid()).orElse(null);
         if (existing != null) {
             return existing;
         }
-        return taskBlueprintRepository.save(blueprint);
+        return taskBlueprintRepository.save(taskBlueprint);
     }
 
     @Override
@@ -49,13 +49,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskBlueprint updateTaskBlueprint(UUID taskBlueprintUuid, TaskBlueprint blueprint) {
+    public TaskBlueprint updateTaskBlueprint(UUID taskBlueprintUuid, TaskBlueprint taskBlueprint) {
         if (!taskBlueprintRepository.existsById(taskBlueprintUuid)) {
             throw new TaskBlueprintNotFoundException(taskBlueprintUuid);
         }
         TaskBlueprint existing = getTaskBlueprint(taskBlueprintUuid);
-        existing.setTitle(blueprint.getTitle());
-        existing.setDescription(blueprint.getDescription());
+        existing.setTitle(taskBlueprint.getTitle());
+        existing.setDescription(taskBlueprint.getDescription());
         return taskBlueprintRepository.save(existing);
     }
 
@@ -73,16 +73,19 @@ public class TaskServiceImpl implements TaskService {
         return taskBlueprintRepository.findAll(pageable).getContent();
     }
 
-    private TaskDTO toTaskDTO(TaskInstance instance) {
-        // Retrieve the associated blueprint:
-        UUID blueprintUuid = instance.getId().getTaskBlueprintUuid();
-        TaskBlueprint blueprint = taskBlueprintRepository.findById(blueprintUuid)
-                .orElseThrow(() -> new TaskBlueprintNotFoundException(blueprintUuid));
+    private TaskDTO toTaskDTO(TaskInstance taskInstance) {
+        TaskInstanceId taskInstanceId = taskInstance.getId();
+        UUID taskBlueprintUuid = taskInstanceId.getTaskBlueprintUuid();
+        if (!taskInstanceRepository.existsById(taskInstanceId)) {
+            throw new TaskInstanceNotFoundException(taskInstanceId);
+        }
+        TaskBlueprint taskBlueprint = taskBlueprintRepository.findById(taskBlueprintUuid)
+                .orElseThrow(() -> new TaskBlueprintNotFoundException(taskBlueprintUuid));
 
         // Build the TaskDTO:
         TaskDTO dto = new TaskDTO();
-        dto.setBlueprint(blueprint);     // “blueprint” field
-        dto.setProgress(instance);       // “progress” field
+        dto.setBlueprint(taskBlueprint);     // “taskBlueprint” field
+        dto.setProgress(taskInstance);       // “progress” field
         return dto;
     }
 
@@ -91,21 +94,32 @@ public class TaskServiceImpl implements TaskService {
     // ------------------------------------------------------------------
 
     @Override
-    public TaskDTO createTaskInstance(TaskInstance instance) {
-        TaskInstance existing = taskInstanceRepository.findById(instance.getId()).orElse(null);
+    public TaskDTO createTaskInstance(TaskInstance taskInstance) {
+        TaskInstanceId taskInstanceId = taskInstance.getId();
+        UUID taskBlueprintUuid = taskInstanceId.getTaskBlueprintUuid();
+        if (!taskInstanceRepository.existsById(taskInstanceId)) {
+            throw new TaskInstanceNotFoundException(taskInstanceId);
+        }
+        if (!taskBlueprintRepository.existsById(taskBlueprintUuid)) {
+            throw new TaskBlueprintNotFoundException(taskBlueprintUuid);
+        }
+        TaskInstance existing = taskInstanceRepository.findById(taskInstance.getId()).orElse(null);
         if (existing != null) {
             // If it already exists, just return its DTO
             return toTaskDTO(existing);
         }
-        TaskInstance saved = taskInstanceRepository.save(instance);
+        TaskInstance saved = taskInstanceRepository.save(taskInstance);
         return toTaskDTO(saved);
     }
 
     @Override
     public TaskDTO getTaskInstance(UUID taskBlueprintUuid, UUID userUuid) {
-        TaskInstanceId id = new TaskInstanceId(taskBlueprintUuid, userUuid);
-        TaskInstance instance = taskInstanceRepository.findById(id)
-                .orElseThrow(() -> new TaskInstanceNotFoundException(id));
+        if (!taskBlueprintRepository.existsById(taskBlueprintUuid)) {
+            throw new TaskBlueprintNotFoundException(taskBlueprintUuid);
+        }
+        TaskInstanceId taskInstanceId = new TaskInstanceId(taskBlueprintUuid, userUuid);
+        TaskInstance instance = taskInstanceRepository.findById(taskInstanceId)
+                .orElseThrow(() -> new TaskInstanceNotFoundException(taskInstanceId));
         return toTaskDTO(instance);
     }
 
@@ -115,9 +129,12 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public TaskDTO updateTaskStatus(UUID taskBlueprintUuid, UUID userUuid, boolean status) {
-        TaskInstanceId id = new TaskInstanceId(taskBlueprintUuid, userUuid);
-        if (!taskInstanceRepository.existsById(id)) {
-            throw new TaskInstanceNotFoundException(id);
+        if (!taskBlueprintRepository.existsById(taskBlueprintUuid)) {
+            throw new TaskBlueprintNotFoundException(taskBlueprintUuid);
+        }
+        TaskInstanceId taskInstanceId = new TaskInstanceId(taskBlueprintUuid, userUuid);
+        if (!taskInstanceRepository.existsById(taskInstanceId)) {
+            throw new TaskInstanceNotFoundException(taskInstanceId);
         }
         TaskInstance instance = getRawTaskInstance(taskBlueprintUuid, userUuid); // see helper below
         instance.setStatus(status);
@@ -130,9 +147,12 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public TaskDTO updateTaskInstance(UUID taskBlueprintUuid, UUID userUuid, TaskInstance updated) {
-        TaskInstanceId id = new TaskInstanceId(taskBlueprintUuid, userUuid);
-        if (!taskInstanceRepository.existsById(id)) {
-            throw new TaskInstanceNotFoundException(id);
+        if (!taskBlueprintRepository.existsById(taskBlueprintUuid)) {
+            throw new TaskBlueprintNotFoundException(taskBlueprintUuid);
+        }
+        TaskInstanceId taskInstanceId = new TaskInstanceId(taskBlueprintUuid, userUuid);
+        if (!taskInstanceRepository.existsById(taskInstanceId)) {
+            throw new TaskInstanceNotFoundException(taskInstanceId);
         }
         TaskInstance existing = getRawTaskInstance(taskBlueprintUuid, userUuid);
         existing.setStatus(updated.getStatus());
@@ -143,11 +163,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteTaskInstance(UUID taskBlueprintUuid, UUID userUuid) {
-        TaskInstanceId id = new TaskInstanceId(taskBlueprintUuid, userUuid);
-        if (!taskInstanceRepository.existsById(id)) {
-            throw new TaskInstanceNotFoundException(id);
+        if (!taskBlueprintRepository.existsById(taskBlueprintUuid)) {
+            throw new TaskBlueprintNotFoundException(taskBlueprintUuid);
         }
-        taskInstanceRepository.deleteById(id);
+        TaskInstanceId taskInstanceId = new TaskInstanceId(taskBlueprintUuid, userUuid);
+        if (!taskInstanceRepository.existsById(taskInstanceId)) {
+            throw new TaskInstanceNotFoundException(taskInstanceId);
+        }
+        taskInstanceRepository.deleteById(taskInstanceId);
     }
 
     /**
@@ -172,9 +195,12 @@ public class TaskServiceImpl implements TaskService {
     // Helper: get raw TaskInstance (used by updateTaskStatus, etc.)
     // ------------------------------------------------------------------
     private TaskInstance getRawTaskInstance(UUID taskBlueprintUuid, UUID userUuid) {
-        TaskInstanceId id = new TaskInstanceId(taskBlueprintUuid, userUuid);
-        return taskInstanceRepository.findById(id)
-                .orElseThrow(() -> new TaskInstanceNotFoundException(id));
+        if (!taskBlueprintRepository.existsById(taskBlueprintUuid)) {
+            throw new TaskBlueprintNotFoundException(taskBlueprintUuid);
+        }
+        TaskInstanceId taskInstanceId = new TaskInstanceId(taskBlueprintUuid, userUuid);
+        return taskInstanceRepository.findById(taskInstanceId)
+                .orElseThrow(() -> new TaskInstanceNotFoundException(taskInstanceId));
     }
 
 

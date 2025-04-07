@@ -71,7 +71,7 @@ public interface MediaApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\" }, { \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\" } ]";
+                    String exampleString = "[ { \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\", \"url\" : \"\" }, { \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\", \"url\" : \"\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -138,7 +138,7 @@ public interface MediaApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\" }";
+                    String exampleString = "{ \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\", \"url\" : \"\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -182,7 +182,7 @@ public interface MediaApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\" }";
+                    String exampleString = "{ \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\", \"url\" : \"\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -228,7 +228,7 @@ public interface MediaApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\" }";
+                    String exampleString = "{ \"description\" : \"description\", \"mediaUUID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"type\" : \"video\", \"title\" : \"title\", \"url\" : \"\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
