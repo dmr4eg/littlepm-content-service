@@ -38,7 +38,7 @@ public class Media {
   @Valid
   private TypeEnum type;
 
-  @NotNull @Valid
+  @Valid
   private String title;
 
   @NotNull @Valid

@@ -7,6 +7,8 @@ package pm.little.api.controllers;
 
 import jakarta.annotation.Generated;
 import pm.little.api.models.Media;
+
+import java.io.IOException;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-04T00:03:08.519382+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-07T19:49:07.297619+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
 @Tag(name = "media", description = "the media API")
 public interface MediaApi {
@@ -197,8 +199,9 @@ public interface MediaApi {
      * POST /media : Upload new media (admin only)
      *
      * @param file The file to upload (required)
-     * @param description Media description (optional)
+     * @param title Media title (optional)
      * @param type Media type (e.g. video, image, etc.) (optional)
+     * @param description Media description (optional)
      * @return The uploaded media metadata (status code 200)
      */
     @Operation(
@@ -222,9 +225,10 @@ public interface MediaApi {
     
     default ResponseEntity<Media> mediaPostMultipart(
         @Parameter(name = "file", description = "The file to upload", required = true) @RequestPart(value = "file", required = true) MultipartFile file,
-        @Parameter(name = "description", description = "Media description") @Valid @RequestParam(value = "description", required = false) String description,
-        @Parameter(name = "type", description = "Media type (e.g. video, image, etc.)") @Valid @RequestParam(value = "type", required = false) String type
-    ) {
+        @Parameter(name = "title", description = "Media title") @Valid @RequestParam(value = "title", required = false) String title,
+        @Parameter(name = "type", description = "Media type (e.g. video, image, etc.)") @Valid @RequestParam(value = "type", required = false) String type,
+        @Parameter(name = "description", description = "Media description") @Valid @RequestParam(value = "description", required = false) String description
+    ) throws IOException {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

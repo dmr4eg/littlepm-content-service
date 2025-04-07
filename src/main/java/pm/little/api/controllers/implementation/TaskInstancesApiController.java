@@ -42,12 +42,8 @@ public class TaskInstancesApiController implements TaskInstancesApi {
             Integer limit,
             Integer offset
     ) {
-        // Example usage if implemented in TaskService:
         List<TaskDTO> dtos = taskService.listTaskInstancesAsDTO(limit, offset);
         return ResponseEntity.ok(dtos);
-
-        // Otherwise, if not implemented, do:
-        // return ResponseEntity.status(501).build();
     }
 
     /**
@@ -83,10 +79,7 @@ public class TaskInstancesApiController implements TaskInstancesApi {
             UUID userUuid,
             TaskInstance taskInstance
     ) {
-        // If you only need to update boolean status:
-        //   TaskDTO updatedDto = taskService.updateTaskStatus(taskBlueprintUuid, userUuid, taskInstance.getStatus());
-        // Or if you want to update the entire record:
-        TaskDTO updatedDto = taskService.updateTaskInstance(taskBlueprintUuid, userUuid, taskInstance);
+        TaskDTO updatedDto = taskService.updateTaskStatus(taskBlueprintUuid, userUuid, taskInstance.getStatus());
         return ResponseEntity.ok(updatedDto);
     }
 
@@ -99,10 +92,7 @@ public class TaskInstancesApiController implements TaskInstancesApi {
             UUID taskBlueprintUuid,
             UUID userUuid
     ) {
-        // If implemented in TaskService:
-        // taskService.deleteTaskInstance(taskBlueprintUuid, userUuid);
-        // return ResponseEntity.noContent().build();
-
-        return ResponseEntity.status(501).build();
+         taskService.deleteTaskInstance(taskBlueprintUuid, userUuid);
+         return ResponseEntity.noContent().build();
     }
 }

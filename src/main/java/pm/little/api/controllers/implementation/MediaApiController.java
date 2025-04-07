@@ -5,10 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import pm.little.api.controllers.MediaApi;
 import pm.little.api.models.Media;
+import pm.little.api.models.enums.TypeEnum;
 import pm.little.contentservice.MediaService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,6 +52,34 @@ public class MediaApiController implements MediaApi {
      * If you want to handle actual file upload, your spec needs a
      * multipart/form-data endpoint with a file param.
      */
+    @Override
+    public ResponseEntity<Media> mediaPostMultipart(MultipartFile file, String title, String type, String description) throws IOException {
+        // CHeck if enum is valid
+        if (type == null || TypeEnum.fromValue(type) == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        // Check if file is empty
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        // Check if file is too large
+        if (file.getSize() > 10 * 1024 * 1024) { // 10 MB limit
+            return ResponseEntity.badRequest().build();
+        }
+        // Check if file type is valid
+        String contentType = file.getContentType();
+        if (contentType == null || (!contentType.startsWith("image/") && !contentType.startsWith("video/"))) {
+            return ResponseEntity.badRequest().build();
+        }
+        // Make input type in valid format
+        if (type.equals("image")) {
+            type = "IMAGE";
+        } else if (type.equals("video")) {
+            type = "VIDEO";
+        }
+        Media media = mediaService.createMedia(file, title, TypeEnum.valueOf(type), description);
+        return ResponseEntity.ok(media);
+    }
 
 
     /**
@@ -57,7 +88,7 @@ public class MediaApiController implements MediaApi {
      */
     @Override
     public ResponseEntity<Media> mediaMediaUuidGet(UUID mediaUuid) {
-        Media found = mediaService.getMedia(mediaUuid);
+        Media found = mediaService.getMediaById(mediaUuid);
         return ResponseEntity.ok(found);
     }
 

@@ -20,9 +20,12 @@ import pm.little.api.models.enums.InputTypeEnum;
  * Field
  */
 
+@Entity
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-06T03:36:51.581853+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 public class Field {
-
+  @Id
+  @NotNull
+  @GeneratedValue(strategy = GenerationType.UUID)
   private UUID fieldUuid;
 
   /**
@@ -32,8 +35,10 @@ public class Field {
   @NotNull
   private InputTypeEnum inputType;
 
+  @NotNull
   private Boolean required;
 
+  @NotNull
   private String title;
 
   private String description;
