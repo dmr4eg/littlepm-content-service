@@ -8,6 +8,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import pm.little.api.controllers.TaskInstancesApi;
 import pm.little.api.models.TaskInstance;
 import pm.little.api.models.dto.TaskDTO;
+import pm.little.api.models.ids.TaskInstanceId;
 import pm.little.contentservice.TaskService;
 
 import java.util.List;
@@ -42,6 +43,9 @@ public class TaskInstancesApiController implements TaskInstancesApi {
             Integer limit,
             Integer offset
     ) {
+        if (limit == null || offset == null || userUuid == null) {
+            return ResponseEntity.badRequest().build();
+        }
         List<TaskDTO> dtos = taskService.listTaskInstancesAsDTO(limit, offset);
         return ResponseEntity.ok(dtos);
     }
@@ -52,6 +56,10 @@ public class TaskInstancesApiController implements TaskInstancesApi {
      */
     @Override
     public ResponseEntity<TaskDTO> taskInstancesPost(TaskInstance taskInstance) {
+        TaskInstanceId id = taskInstance.getId();
+        if (id == null || id.getTaskBlueprintUuid() == null || id.getUserUuid() == null || taskInstance == null) {
+            return ResponseEntity.badRequest().build();
+        }
         TaskDTO createdDto = taskService.createTaskInstance(taskInstance);
         return ResponseEntity.ok(createdDto);
     }
@@ -65,6 +73,9 @@ public class TaskInstancesApiController implements TaskInstancesApi {
             UUID taskBlueprintUuid,
             UUID userUuid
     ) {
+        if (taskBlueprintUuid == null || userUuid == null) {
+            return ResponseEntity.badRequest().build();
+        }
         TaskDTO dto = taskService.getTaskInstance(taskBlueprintUuid, userUuid);
         return ResponseEntity.ok(dto);
     }
@@ -79,6 +90,9 @@ public class TaskInstancesApiController implements TaskInstancesApi {
             UUID userUuid,
             TaskInstance taskInstance
     ) {
+        if (taskBlueprintUuid == null || userUuid == null || taskInstance == null) {
+            return ResponseEntity.badRequest().build();
+        }
         TaskDTO updatedDto = taskService.updateTaskStatus(taskBlueprintUuid, userUuid, taskInstance.getStatus());
         return ResponseEntity.ok(updatedDto);
     }
@@ -92,6 +106,9 @@ public class TaskInstancesApiController implements TaskInstancesApi {
             UUID taskBlueprintUuid,
             UUID userUuid
     ) {
+            if (taskBlueprintUuid == null || userUuid == null) {
+                return ResponseEntity.badRequest().build();
+            }
          taskService.deleteTaskInstance(taskBlueprintUuid, userUuid);
          return ResponseEntity.noContent().build();
     }

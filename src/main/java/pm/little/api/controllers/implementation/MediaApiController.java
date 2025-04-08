@@ -40,6 +40,9 @@ public class MediaApiController implements MediaApi {
      */
     @Override
     public ResponseEntity<List<Media>> mediaGet(Integer limit, Integer offset) {
+        if (limit == null || offset == null) {
+            return ResponseEntity.badRequest().build();
+        }
         List<Media> mediaList = mediaService.listMedia(limit, offset);
         return ResponseEntity.ok(mediaList);
     }
@@ -47,31 +50,22 @@ public class MediaApiController implements MediaApi {
     /**
      * POST /media
      * (Upload new media metadata, admin only)
-     *
-     * Note: The OpenAPI spec only provides a JSON body with `Media`.
-     * If you want to handle actual file upload, your spec needs a
-     * multipart/form-data endpoint with a file param.
      */
     @Override
     public ResponseEntity<Media> mediaPostMultipart(MultipartFile file, String title, String type, String description) throws IOException {
-        // CHeck if enum is valid
         if (type == null || TypeEnum.fromValue(type) == null) {
             return ResponseEntity.badRequest().build();
         }
-        // Check if file is empty
         if (file == null || file.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        // Check if file is too large
         if (file.getSize() > 10 * 1024 * 1024) { // 10 MB limit
             return ResponseEntity.badRequest().build();
         }
-        // Check if file type is valid
         String contentType = file.getContentType();
         if (contentType == null || (!contentType.startsWith("image/") && !contentType.startsWith("video/"))) {
             return ResponseEntity.badRequest().build();
         }
-        // Make input type in valid format
         if (type.equals("image")) {
             type = "IMAGE";
         } else if (type.equals("video")) {
@@ -88,6 +82,9 @@ public class MediaApiController implements MediaApi {
      */
     @Override
     public ResponseEntity<Media> mediaMediaUuidGet(UUID mediaUuid) {
+        if (mediaUuid == null) {
+            throw new IllegalArgumentException("Media UUID cannot be null");
+        }
         Media found = mediaService.getMediaById(mediaUuid);
         return ResponseEntity.ok(found);
     }
@@ -98,6 +95,9 @@ public class MediaApiController implements MediaApi {
      */
     @Override
     public ResponseEntity<Media> mediaMediaUuidPut(UUID mediaUuid, Media media) {
+        if (mediaUuid == null || media == null) {
+            return ResponseEntity.badRequest().build();
+        }
         Media updated = mediaService.updateMedia(mediaUuid, media);
         return ResponseEntity.ok(updated);
     }
@@ -108,6 +108,9 @@ public class MediaApiController implements MediaApi {
      */
     @Override
     public ResponseEntity<Void> mediaMediaUuidDelete(UUID mediaUuid) {
+        if (mediaUuid == null) {
+            return ResponseEntity.badRequest().build();
+        }
         mediaService.deleteMedia(mediaUuid);
         return ResponseEntity.noContent().build();
     }

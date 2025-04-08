@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
 import pm.little.api.controllers.FormFieldMapperApi;
 import pm.little.api.models.FormFieldMapper;
+import pm.little.api.models.ids.FormFieldMapperId;
 import pm.little.contentservice.FormService;
 
 import java.util.List;
@@ -46,9 +47,11 @@ public class FormFieldMapperApiController implements FormFieldMapperApi {
             Integer offset,
             UUID userUuid
     ) {
-        // Example if you implement:
-         List<FormFieldMapper> mappers = formService.listFormFieldMappers(100, 0);
-         return ResponseEntity.ok(mappers);
+        if (limit == null || offset == null || userUuid == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        List<FormFieldMapper> mappers = formService.listFormFieldMappers(100, 0);
+        return ResponseEntity.ok(mappers);
     }
 
     /**
@@ -57,7 +60,10 @@ public class FormFieldMapperApiController implements FormFieldMapperApi {
      */
     @Override
     public ResponseEntity<FormFieldMapper> formFieldMapperPost(FormFieldMapper formFieldMapper) {
-        // The sort order can come from formFieldMapper.getOrder().
+        FormFieldMapperId mapperId = formFieldMapper.getId();
+        if (mapperId == null || mapperId.getFormBlueprintUuid() == null || mapperId.getFieldUuid() == null || formFieldMapper == null) {
+            return ResponseEntity.badRequest().build();
+        }
         FormFieldMapper created = formService.createFormFieldMapper(formFieldMapper, formFieldMapper.getSortOrder());
         return ResponseEntity.ok(created);
     }
@@ -70,6 +76,9 @@ public class FormFieldMapperApiController implements FormFieldMapperApi {
             UUID formBlueprintUuid,
             UUID fieldUuid
     ) {
+        if (formBlueprintUuid == null || fieldUuid == null) {
+            return ResponseEntity.badRequest().build();
+        }
         FormFieldMapper mapper = formService.getFormFieldMapper(formBlueprintUuid, fieldUuid);
         return ResponseEntity.ok(mapper);
     }
@@ -89,10 +98,11 @@ public class FormFieldMapperApiController implements FormFieldMapperApi {
             UUID fieldUuid,
             FormFieldMapper formFieldMapper
     ) {
-         FormFieldMapper updated = formService.updateFormFieldMapper(formBlueprintUuid, fieldUuid, formFieldMapper);
-         return ResponseEntity.ok(updated);
-
-
+        if (formBlueprintUuid == null || fieldUuid == null || formFieldMapper == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        FormFieldMapper updated = formService.updateFormFieldMapper(formBlueprintUuid, fieldUuid, formFieldMapper);
+        return ResponseEntity.ok(updated);
     }
 
     /**
@@ -103,7 +113,10 @@ public class FormFieldMapperApiController implements FormFieldMapperApi {
             UUID formBlueprintUuid,
             UUID fieldUuid
     ) {
-         formService.deleteFormFieldMapper(formBlueprintUuid, fieldUuid);
-         return ResponseEntity.noContent().build();
+        if (formBlueprintUuid == null || fieldUuid == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        formService.deleteFormFieldMapper(formBlueprintUuid, fieldUuid);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -31,7 +31,7 @@ public class MediaServiceImpl implements MediaService {
     
     @Override
     public List<Media> getAllMedia(int limit, int offset) {
-        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Pageable pageable = PageRequest.of(offset, limit);
         return mediaRepository.findAll(pageable).getContent();
     }
 
@@ -44,6 +44,9 @@ public class MediaServiceImpl implements MediaService {
     @Override
     @Transactional
     public void deleteMedia(UUID mediaUuid) {
+        if (!mediaRepository.existsById(mediaUuid)) {
+            throw new MediaNotFoundException(mediaUuid);
+        }
         Media media = getMediaById(mediaUuid);
         mediaRepository.delete(media);
         filesService.deleteFile(media.getUrl());
@@ -51,9 +54,11 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public Media updateMedia(UUID mediaUuid, Media mediaDetails) {
+        if (!mediaRepository.existsById(mediaUuid)) {
+            throw new MediaNotFoundException(mediaUuid);
+        }
         Media existingMedia = getMediaById(mediaUuid);
 
-        // Update allowed fields (assuming URL shouldn't be modified through this endpoint)
         existingMedia.setTitle(mediaDetails.getTitle());
         existingMedia.setDescription(mediaDetails.getDescription());
         existingMedia.setType(mediaDetails.getType());
@@ -64,13 +69,8 @@ public class MediaServiceImpl implements MediaService {
     @Override
     @Transactional
     public Media createMedia(MultipartFile file, String title, TypeEnum type, String description) throws IOException {
-        // Generate UUID (workaround for model constraints)
         UUID mediaUUID = UUID.randomUUID();
-
-        // Store file and get URL
         URI url = filesService.storeFile(file, mediaUUID);
-
-        // Create media entity
         Media media = new Media();
         media.setMediaUUID(mediaUUID);
         media.setTitle(title);

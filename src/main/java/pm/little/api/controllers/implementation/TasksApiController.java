@@ -37,6 +37,9 @@ public class TasksApiController implements TasksApi {
      */
     @Override
     public ResponseEntity<List<TaskBlueprint>> tasksGet(Integer limit, Integer offset) {
+        if (limit == null || offset == null) {
+            return ResponseEntity.badRequest().build();
+        }
         List<TaskBlueprint> tasks = taskService.listTaskBlueprints(limit, offset);
         return ResponseEntity.ok(tasks);
     }
@@ -47,6 +50,9 @@ public class TasksApiController implements TasksApi {
      */
     @Override
     public ResponseEntity<TaskBlueprint> tasksPost(TaskBlueprint taskBlueprint) {
+        if (taskBlueprint == null) {
+            return ResponseEntity.badRequest().build();
+        }
         TaskBlueprint created = taskService.createTaskBlueprint(taskBlueprint);
         return ResponseEntity.ok(created);
     }
@@ -57,6 +63,9 @@ public class TasksApiController implements TasksApi {
      */
     @Override
     public ResponseEntity<TaskBlueprint> tasksTaskBlueprintUuidGet(UUID taskBlueprintUuid) {
+        if (taskBlueprintUuid == null) {
+            return ResponseEntity.badRequest().build();
+        }
         TaskBlueprint blueprint = taskService.getTaskBlueprint(taskBlueprintUuid);
         return ResponseEntity.ok(blueprint);
     }
@@ -67,6 +76,9 @@ public class TasksApiController implements TasksApi {
      */
     @Override
     public ResponseEntity<TaskBlueprint> tasksTaskBlueprintUuidPut(UUID taskBlueprintUuid, TaskBlueprint taskBlueprint) {
+        if (taskBlueprintUuid == null || taskBlueprint == null) {
+            return ResponseEntity.badRequest().build();
+        }
         TaskBlueprint updated = taskService.updateTaskBlueprint(taskBlueprintUuid, taskBlueprint);
         return ResponseEntity.ok(updated);
     }
@@ -77,6 +89,9 @@ public class TasksApiController implements TasksApi {
      */
     @Override
     public ResponseEntity<Void> tasksTaskBlueprintUuidDelete(UUID taskBlueprintUuid) {
+        if (taskBlueprintUuid == null) {
+            return ResponseEntity.badRequest().build();
+        }
         taskService.deleteTaskBlueprint(taskBlueprintUuid);
         return ResponseEntity.noContent().build();
     }

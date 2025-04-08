@@ -36,6 +36,9 @@ public class FormsApiController implements FormsApi {
      */
     @Override
     public ResponseEntity<List<FormBlueprint>> formsGet(Integer limit, Integer offset) {
+        if (limit == null || offset == null) {
+            return ResponseEntity.badRequest().build();
+        }
         List<FormBlueprint> formBlueprints = formService.listFormBlueprints(limit, offset);
         return ResponseEntity.ok(formBlueprints);
     }
@@ -46,6 +49,9 @@ public class FormsApiController implements FormsApi {
      */
     @Override
     public ResponseEntity<FormBlueprint> formsPost(FormBlueprint formBlueprint) {
+        if (formBlueprint == null) {
+            return ResponseEntity.badRequest().build();
+        }
         FormBlueprint created = formService.createFormBlueprint(formBlueprint);
         return ResponseEntity.ok(created);
     }
@@ -55,6 +61,9 @@ public class FormsApiController implements FormsApi {
      */
     @Override
     public ResponseEntity<FormBlueprint> formsFormBlueprintUuidGet(UUID formBlueprintUuid) {
+        if (formBlueprintUuid == null) {
+            return ResponseEntity.badRequest().build();
+        }
         FormBlueprint blueprint = formService.getFormBlueprint(formBlueprintUuid);
         return ResponseEntity.ok(blueprint);
     }
@@ -65,6 +74,9 @@ public class FormsApiController implements FormsApi {
      */
     @Override
     public ResponseEntity<FormBlueprint> formsFormBlueprintUuidPut(UUID formBlueprintUuid, FormBlueprint formBlueprint) {
+        if (formBlueprintUuid == null || formBlueprint == null) {
+            return ResponseEntity.badRequest().build();
+        }
         FormBlueprint updated = formService.updateFormBlueprint(formBlueprintUuid, formBlueprint);
         return ResponseEntity.ok(updated);
     }
@@ -75,6 +87,9 @@ public class FormsApiController implements FormsApi {
      */
     @Override
     public ResponseEntity<Void> formsFormBlueprintUuidDelete(UUID formBlueprintUuid) {
+        if (formBlueprintUuid == null) {
+            return ResponseEntity.badRequest().build();
+        }
         formService.deleteFormBlueprint(formBlueprintUuid);
         return ResponseEntity.noContent().build();
     }
