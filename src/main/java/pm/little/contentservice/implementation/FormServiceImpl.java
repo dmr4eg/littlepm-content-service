@@ -32,14 +32,12 @@ public class FormServiceImpl implements FormService {
             FormBlueprintRepository formBlueprintRepository,
             FieldRepository fieldRepository,
             FormFieldMapperRepository formFieldMapperRepository,
-            FormInstanceRepository formInstanceRepository
-    ) {
+            FormInstanceRepository formInstanceRepository) {
         this.formBlueprintRepository = formBlueprintRepository;
         this.fieldRepository = fieldRepository;
         this.formFieldMapperRepository = formFieldMapperRepository;
         this.formInstanceRepository = formInstanceRepository;
     }
-
 
     @Override
     public FormBlueprint createFormBlueprint(FormBlueprint blueprint) {
@@ -93,9 +91,6 @@ public class FormServiceImpl implements FormService {
         if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
             throw new FormBlueprintNotFoundException(formBlueprintUuid);
         }
-        if (!fieldRepository.existsById(fieldUuid)) {
-            throw new FormFieldNotFoundException(fieldUuid);
-        }
         FormFieldMapper existing = formFieldMapperRepository.findById(mapper.getId()).orElse(null);
         if (existing != null) {
             return existing;
@@ -145,17 +140,11 @@ public class FormServiceImpl implements FormService {
         }
         FormBlueprint formBlueprint = formBlueprintRepository.findById(formBlueprintUuid)
                 .orElseThrow(() -> new FormBlueprintNotFoundException(formBlueprintUuid));
-
-        // Build the DTO
         FormDTO dto = new FormDTO();
         dto.setBlueprint(formBlueprint);
         dto.setInstance(instance);
         return dto;
     }
-
-    // ------------------------------------------------------------------------
-    // Form Instance methods returning FormDTO
-    // ------------------------------------------------------------------------
 
     @Override
     public FormDTO createFormInstance(FormInstance instance) {
@@ -169,7 +158,6 @@ public class FormServiceImpl implements FormService {
         }
         FormInstance existing = formInstanceRepository.findById(instance.getId()).orElse(null);
         if (existing != null) {
-            // If it already exists, just return the DTO of that existing instance
             return toFormDTO(existing);
         }
         FormInstance saved = formInstanceRepository.save(instance);
@@ -193,16 +181,12 @@ public class FormServiceImpl implements FormService {
             throw new FormBlueprintNotFoundException(formBlueprintUuid);
         }
         FormInstanceId id = new FormInstanceId(formBlueprintUuid, userUuid);
-        // Make sure it exists:
         if (!formInstanceRepository.existsById(id)) {
             throw new FormInstanceNotFoundException(id);
         }
-        // Load existing, update its fields:
         FormInstance existing = formInstanceRepository.findById(id)
                 .orElseThrow(() -> new FormInstanceNotFoundException(id));
         existing.setStatus(updated.getStatus());
-        // ...update any other fields you want here...
-
         FormInstance saved = formInstanceRepository.save(existing);
         return toFormDTO(saved);
     }
@@ -224,19 +208,18 @@ public class FormServiceImpl implements FormService {
      * That depends on your preference.
      */
     @Override
-    public List<FormInstance> listFormInstances(int limit, int offset){
+    public List<FormInstance> listFormInstances(int limit, int offset) {
         Pageable pageable = PageRequest.of(offset, limit);
         return formInstanceRepository.findAll(pageable).getContent();
     }
 
     @Override
-    public List<FormDTO> listFormInstancesAsDTO(int limit, int offset){
+    public List<FormDTO> listFormInstancesAsDTO(int limit, int offset) {
         return listFormInstances(limit, offset)
                 .stream()
                 .map(this::toFormDTO)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public List<FormFieldMapper> listFormFieldMappers(int limit, int offset) {
@@ -262,7 +245,7 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public void deleteFormFieldMapper(UUID formBlueprintUuid, UUID fieldUuid){
+    public void deleteFormFieldMapper(UUID formBlueprintUuid, UUID fieldUuid) {
         if (!formBlueprintRepository.existsById(formBlueprintUuid)) {
             throw new FormBlueprintNotFoundException(formBlueprintUuid);
         }

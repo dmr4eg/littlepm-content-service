@@ -24,8 +24,7 @@ public class TaskServiceImpl implements TaskService {
 
     public TaskServiceImpl(
             TaskBlueprintRepository taskBlueprintRepository,
-            TaskInstanceRepository taskInstanceRepository
-    ) {
+            TaskInstanceRepository taskInstanceRepository) {
         this.taskBlueprintRepository = taskBlueprintRepository;
         this.taskInstanceRepository = taskInstanceRepository;
     }
@@ -82,16 +81,11 @@ public class TaskServiceImpl implements TaskService {
         TaskBlueprint taskBlueprint = taskBlueprintRepository.findById(taskBlueprintUuid)
                 .orElseThrow(() -> new TaskBlueprintNotFoundException(taskBlueprintUuid));
 
-        // Build the TaskDTO:
         TaskDTO dto = new TaskDTO();
-        dto.setBlueprint(taskBlueprint);     // “taskBlueprint” field
-        dto.setProgress(taskInstance);       // “progress” field
+        dto.setBlueprint(taskBlueprint);
+        dto.setProgress(taskInstance);
         return dto;
     }
-
-    // ------------------------------------------------------------------
-    // Task Instance methods that now return TaskDTO
-    // ------------------------------------------------------------------
 
     @Override
     public TaskDTO createTaskInstance(TaskInstance taskInstance) {
@@ -105,7 +99,6 @@ public class TaskServiceImpl implements TaskService {
         }
         TaskInstance existing = taskInstanceRepository.findById(taskInstance.getId()).orElse(null);
         if (existing != null) {
-            // If it already exists, just return its DTO
             return toTaskDTO(existing);
         }
         TaskInstance saved = taskInstanceRepository.save(taskInstance);
@@ -156,7 +149,6 @@ public class TaskServiceImpl implements TaskService {
         }
         TaskInstance existing = getRawTaskInstance(taskBlueprintUuid, userUuid);
         existing.setStatus(updated.getStatus());
-        // ...update other fields if needed...
         TaskInstance saved = taskInstanceRepository.save(existing);
         return toTaskDTO(saved);
     }
@@ -191,9 +183,6 @@ public class TaskServiceImpl implements TaskService {
                 .collect(Collectors.toList());
     }
 
-    // ------------------------------------------------------------------
-    // Helper: get raw TaskInstance (used by updateTaskStatus, etc.)
-    // ------------------------------------------------------------------
     private TaskInstance getRawTaskInstance(UUID taskBlueprintUuid, UUID userUuid) {
         if (!taskBlueprintRepository.existsById(taskBlueprintUuid)) {
             throw new TaskBlueprintNotFoundException(taskBlueprintUuid);
@@ -202,6 +191,5 @@ public class TaskServiceImpl implements TaskService {
         return taskInstanceRepository.findById(taskInstanceId)
                 .orElseThrow(() -> new TaskInstanceNotFoundException(taskInstanceId));
     }
-
 
 }
