@@ -1,7 +1,7 @@
 server:
   address: ${SPRING_HOST}
   port: ${SPRING_PORT}
-#  forward-headers-strategy: framework
+  forward-headers-strategy: framework
 
 logging:
   level:
