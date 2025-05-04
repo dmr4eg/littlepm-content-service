@@ -38,7 +38,7 @@ public class FormInstancesApiController implements FormInstancesApi {
      * List all form instances but return them as FormDTO.
      */
     @Override
-    public ResponseEntity<List<FormDTO>> formInstancesGet(UUID userUuid, Integer limit, Integer offset) {
+    public ResponseEntity<List<FormDTO>> formInstancesGet(Integer limit, Integer offset, UUID userUuid) {
         if (limit == null || offset == null || userUuid == null) {
             return ResponseEntity.badRequest().build();
         }

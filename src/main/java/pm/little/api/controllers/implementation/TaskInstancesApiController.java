@@ -39,9 +39,9 @@ public class TaskInstancesApiController implements TaskInstancesApi {
      */
     @Override
     public ResponseEntity<List<TaskDTO>> taskInstancesGet(
-            UUID userUuid,
             Integer limit,
-            Integer offset
+            Integer offset,
+            UUID userUuid
     ) {
         if (limit == null || offset == null || userUuid == null) {
             return ResponseEntity.badRequest().build();
