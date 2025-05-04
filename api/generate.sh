@@ -1,1 +1,0 @@
-openapi-generator generate -i ./public.openapi.yaml -g spring -o gen/ --additional-properties=apiPackage=pm.little.api.controllers,basePackage=pm.little.api,configPackage=pm.little.api.confs,modelPackage=pm.little.api.models,java8=true,maven.compiler.source=17,maven.compiler.target=17
