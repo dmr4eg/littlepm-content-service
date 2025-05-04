@@ -36,7 +36,7 @@ import java.util.Optional;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-04T00:03:08.519382+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
-@Tag(name = "form-field-mapper", description = "the form-field-mapper API")
+@Tag(name = "forms", description = "Form blueprints and instances")
 public interface FormFieldMapperApi {
 
     default Optional<NativeWebRequest> getRequest() {
@@ -53,6 +53,7 @@ public interface FormFieldMapperApi {
     @Operation(
         operationId = "formFieldMapperFormBlueprintUuidFieldUuidDelete",
         summary = "Delete a form-field mapping (admin only)",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content")
         },
@@ -84,6 +85,7 @@ public interface FormFieldMapperApi {
     @Operation(
         operationId = "formFieldMapperFormBlueprintUuidFieldUuidGet",
         summary = "Get a specific form-field mapping",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "A single FormFieldMapper", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormFieldMapper.class))
@@ -128,6 +130,7 @@ public interface FormFieldMapperApi {
     @Operation(
         operationId = "formFieldMapperFormBlueprintUuidFieldUuidPut",
         summary = "Update a form-field mapping (admin only)",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated form-field mapping", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormFieldMapper.class))
@@ -168,12 +171,13 @@ public interface FormFieldMapperApi {
      *
      * @param limit Limit of the list (required)
      * @param offset Offset of the list (required)
-     * @param userUuid The UUID of the user (required)
+     * @param userUuid Filter list responses by user uuid (optional)
      * @return A list of FormFieldMapper (status code 200)
      */
     @Operation(
         operationId = "formFieldMapperGet",
         summary = "List all form-field mappings",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "A list of FormFieldMapper", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormFieldMapper.class)))
@@ -192,7 +196,7 @@ public interface FormFieldMapperApi {
     default ResponseEntity<List<FormFieldMapper>> formFieldMapperGet(
         @NotNull @Parameter(name = "limit", description = "Limit of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = true) Integer limit,
         @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset,
-        @Parameter(name = "user_uuid", description = "The UUID of the user", required = true, in = ParameterIn.PATH) @PathVariable("user_uuid") UUID userUuid
+        @Parameter(name = "user_uuid", description = "Filter list responses by user uuid", in = ParameterIn.QUERY) @Valid @RequestParam(value = "user_uuid", required = false) UUID userUuid
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -217,6 +221,7 @@ public interface FormFieldMapperApi {
     @Operation(
         operationId = "formFieldMapperPost",
         summary = "Create a form-field mapping (admin only)",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Created form-field mapping", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormFieldMapper.class))

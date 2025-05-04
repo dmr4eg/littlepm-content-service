@@ -37,7 +37,7 @@ import java.util.Optional;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-07T19:49:07.297619+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
-@Tag(name = "media", description = "the media API")
+@Tag(name = "media", description = "Media resources")
 public interface MediaApi {
 
     default Optional<NativeWebRequest> getRequest() {
@@ -54,6 +54,7 @@ public interface MediaApi {
     @Operation(
         operationId = "mediaGet",
         summary = "(Optional) List media items",
+        tags = { "media" },
         responses = {
             @ApiResponse(responseCode = "200", description = "A list of media", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Media.class)))
@@ -93,6 +94,7 @@ public interface MediaApi {
     @Operation(
         operationId = "mediaMediaUuidDelete",
         summary = "Delete media (admin only)",
+        tags = { "media" },
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content")
         },
@@ -122,6 +124,7 @@ public interface MediaApi {
     @Operation(
         operationId = "mediaMediaUuidGet",
         summary = "Get media metadata",
+        tags = { "media" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Media metadata", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Media.class))
@@ -161,6 +164,7 @@ public interface MediaApi {
     @Operation(
         operationId = "mediaMediaUuidPut",
         summary = "Update media metadata (admin only)",
+        tags = { "media" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated media metadata", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Media.class))
@@ -207,6 +211,7 @@ public interface MediaApi {
     @Operation(
         operationId = "mediaPostMultipart",
         summary = "Upload new media (admin only)",
+        tags = { "media" },
         responses = {
             @ApiResponse(responseCode = "200", description = "The uploaded media metadata", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Media.class))

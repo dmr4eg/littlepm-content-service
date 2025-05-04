@@ -37,7 +37,7 @@ import java.util.Optional;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-04T00:03:08.519382+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
-@Tag(name = "form-instances", description = "the form-instances API")
+@Tag(name = "forms", description = "Form blueprints and instances")
 public interface FormInstancesApi {
 
     default Optional<NativeWebRequest> getRequest() {
@@ -54,6 +54,7 @@ public interface FormInstancesApi {
     @Operation(
         operationId = "formInstancesFormBlueprintUuidUserUuidDelete",
         summary = "Delete a form instance",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content")
         },
@@ -85,6 +86,7 @@ public interface FormInstancesApi {
     @Operation(
         operationId = "formInstancesFormBlueprintUuidUserUuidGet",
         summary = "Get a user's specific form instance",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "FormInstance", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormDTO.class))
@@ -129,6 +131,7 @@ public interface FormInstancesApi {
     @Operation(
         operationId = "formInstancesFormBlueprintUuidUserUuidPut",
         summary = "Update a form instance",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated form instance", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormDTO.class))
@@ -167,14 +170,15 @@ public interface FormInstancesApi {
     /**
      * GET /form-instances : List all form instances
      *
-     * @param userUuid The UUID of the user (required)
      * @param limit Limit of the list (required)
      * @param offset Offset of the list (required)
+     * @param userUuid Filter list responses by user uuid (optional)
      * @return A list of FormInstance (status code 200)
      */
     @Operation(
         operationId = "formInstancesGet",
         summary = "List all form instances",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "A list of FormInstance", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormDTO.class)))
@@ -191,9 +195,9 @@ public interface FormInstancesApi {
     )
     
     default ResponseEntity<List<FormDTO>> formInstancesGet(
-        @Parameter(name = "user_uuid", description = "The UUID of the user", required = true, in = ParameterIn.PATH) @PathVariable("user_uuid") UUID userUuid,
         @NotNull @Parameter(name = "limit", description = "Limit of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = true) Integer limit,
-        @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset
+        @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset,
+        @Parameter(name = "user_uuid", description = "Filter list responses by user uuid", in = ParameterIn.QUERY) @Valid @RequestParam(value = "user_uuid", required = false) UUID userUuid
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -218,6 +222,7 @@ public interface FormInstancesApi {
     @Operation(
         operationId = "formInstancesPost",
         summary = "Create a form instance (user)",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Created form instance", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormDTO.class))

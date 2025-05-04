@@ -37,7 +37,7 @@ import java.util.Optional;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-04T00:03:08.519382+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
-@Tag(name = "task-instances", description = "the task-instances API")
+@Tag(name = "tasks", description = "Task blueprints and instances")
 public interface TaskInstancesApi {
 
     default Optional<NativeWebRequest> getRequest() {
@@ -47,14 +47,15 @@ public interface TaskInstancesApi {
     /**
      * GET /task-instances : List all task instances
      *
-     * @param userUuid The UUID of the user (required)
      * @param limit Limit of the list (required)
      * @param offset Offset of the list (required)
+     * @param userUuid Filter list responses by user uuid (optional)
      * @return A list of TaskInstance (status code 200)
      */
     @Operation(
         operationId = "taskInstancesGet",
         summary = "List all task instances",
+        tags = { "tasks" },
         responses = {
             @ApiResponse(responseCode = "200", description = "A list of TaskInstance", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TaskDTO.class)))
@@ -71,9 +72,9 @@ public interface TaskInstancesApi {
     )
     
     default ResponseEntity<List<TaskDTO>> taskInstancesGet(
-        @Parameter(name = "user_uuid", description = "The UUID of the user", required = true, in = ParameterIn.PATH) @PathVariable("user_uuid") UUID userUuid,
         @NotNull @Parameter(name = "limit", description = "Limit of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "limit", required = true) Integer limit,
-        @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset
+        @NotNull @Parameter(name = "offset", description = "Offset of the list", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "offset", required = true) Integer offset,
+        @Parameter(name = "user_uuid", description = "Filter list responses by user uuid", in = ParameterIn.QUERY) @Valid @RequestParam(value = "user_uuid", required = false) UUID userUuid
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -98,6 +99,7 @@ public interface TaskInstancesApi {
     @Operation(
         operationId = "taskInstancesPost",
         summary = "Create a new task instance",
+        tags = { "tasks" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Created task instance", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = TaskDTO.class))
@@ -141,6 +143,7 @@ public interface TaskInstancesApi {
     @Operation(
         operationId = "taskInstancesTaskBlueprintUuidUserUuidDelete",
         summary = "Delete a task instance",
+        tags = { "tasks" },
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content")
         },
@@ -172,6 +175,7 @@ public interface TaskInstancesApi {
     @Operation(
         operationId = "taskInstancesTaskBlueprintUuidUserUuidGet",
         summary = "Get a user's specific task instance",
+        tags = { "tasks" },
         responses = {
             @ApiResponse(responseCode = "200", description = "TaskInstance", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = TaskDTO.class))
@@ -216,6 +220,7 @@ public interface TaskInstancesApi {
     @Operation(
         operationId = "taskInstancesTaskBlueprintUuidUserUuidPut",
         summary = "Update a task instance",
+        tags = { "tasks" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated task instance", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = TaskDTO.class))

@@ -36,7 +36,7 @@ import java.util.Optional;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-04T00:03:08.519382+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
-@Tag(name = "forms", description = "the forms API")
+@Tag(name = "forms", description = "Form blueprints and instances")
 public interface FormsApi {
 
     default Optional<NativeWebRequest> getRequest() {
@@ -52,6 +52,7 @@ public interface FormsApi {
     @Operation(
         operationId = "formsFormBlueprintUuidDelete",
         summary = "Delete form template (admin only)",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content")
         },
@@ -81,6 +82,7 @@ public interface FormsApi {
     @Operation(
         operationId = "formsFormBlueprintUuidGet",
         summary = "Get form template",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Form blueprint", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormBlueprint.class))
@@ -120,6 +122,7 @@ public interface FormsApi {
     @Operation(
         operationId = "formsFormBlueprintUuidPut",
         summary = "Update form template (admin only)",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated form blueprint", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormBlueprint.class))
@@ -164,6 +167,7 @@ public interface FormsApi {
     @Operation(
         operationId = "formsGet",
         summary = "List form templates",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "A list of form templates", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormBlueprint.class)))
@@ -203,6 +207,7 @@ public interface FormsApi {
     @Operation(
         operationId = "formsPost",
         summary = "Create form template (admin only)",
+        tags = { "forms" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Created form blueprint", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = FormBlueprint.class))

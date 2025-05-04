@@ -35,7 +35,7 @@ import java.util.Optional;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-04T00:03:08.519382+02:00[Europe/Prague]", comments = "Generator version: 7.11.0")
 @Validated
-@Tag(name = "tasks", description = "the tasks API")
+@Tag(name = "tasks", description = "Task blueprints and instances")
 public interface TasksApi {
 
     default Optional<NativeWebRequest> getRequest() {
@@ -52,6 +52,7 @@ public interface TasksApi {
     @Operation(
         operationId = "tasksGet",
         summary = "List task templates",
+        tags = { "tasks" },
         responses = {
             @ApiResponse(responseCode = "200", description = "A list of task templates", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TaskBlueprint.class)))
@@ -91,6 +92,7 @@ public interface TasksApi {
     @Operation(
         operationId = "tasksPost",
         summary = "Create task template (admin only)",
+        tags = { "tasks" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Created task blueprint", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = TaskBlueprint.class))
@@ -133,6 +135,7 @@ public interface TasksApi {
     @Operation(
         operationId = "tasksTaskBlueprintUuidDelete",
         summary = "Delete task template (admin only)",
+        tags = { "tasks" },
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content")
         },
@@ -162,6 +165,7 @@ public interface TasksApi {
     @Operation(
         operationId = "tasksTaskBlueprintUuidGet",
         summary = "Get task template",
+        tags = { "tasks" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Task blueprint", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = TaskBlueprint.class))
@@ -201,6 +205,7 @@ public interface TasksApi {
     @Operation(
         operationId = "tasksTaskBlueprintUuidPut",
         summary = "Update task template (admin only)",
+        tags = { "tasks" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Updated task blueprint", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = TaskBlueprint.class))
